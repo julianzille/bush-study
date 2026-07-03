@@ -379,6 +379,106 @@ body {
   transition:opacity .2s;
 }
 .scroll-top.visible { display:flex; }
+
+/* IMAGE BUTTON */
+.img-btn {
+  flex-shrink:0;
+  width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:50%; color:var(--amber);
+  cursor:pointer; padding:0;
+  transition:background .2s, transform .1s;
+}
+.img-btn:active { transform:scale(0.9); background:var(--amber-glow); }
+.img-btn svg { width:16px; height:16px; }
+
+/* GALLERY MODAL */
+.modal-overlay {
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  display:none; align-items:flex-end; justify-content:center;
+  opacity:0; transition:opacity .2s;
+}
+.modal-overlay.open { display:flex; opacity:1; }
+.modal {
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius) var(--radius) 0 0;
+  width:100%; max-width:640px;
+  max-height:88dvh; display:flex; flex-direction:column;
+  box-shadow:0 -8px 40px rgba(0,0,0,0.6);
+  transform:translateY(16px); transition:transform .25s ease;
+  padding-bottom:env(safe-area-inset-bottom,0);
+}
+.modal-overlay.open .modal { transform:translateY(0); }
+@media(min-width:641px){
+  .modal-overlay { align-items:center; }
+  .modal { border-radius:var(--radius); max-height:82dvh; }
+}
+.modal-header {
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:12px; padding:18px 18px 12px;
+  border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.modal-title { font-size:1.05rem; font-weight:600; line-height:1.3; }
+.modal-sci { font-size:.8rem; color:var(--sage); font-style:italic; margin-top:2px; }
+.modal-close {
+  flex-shrink:0; width:32px; height:32px;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:50%; color:var(--text-dim);
+  font-size:1rem; cursor:pointer; line-height:1;
+  display:flex; align-items:center; justify-content:center;
+}
+.modal-close:active { transform:scale(0.92); }
+.modal-body {
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:14px; flex:1; min-height:160px;
+}
+.gallery-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:10px;
+}
+.gallery-item {
+  position:relative; display:block;
+  border-radius:var(--radius-sm); overflow:hidden;
+  background:var(--bg-elevated); aspect-ratio:4/3;
+  text-decoration:none;
+}
+.gallery-item img {
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.gallery-cap {
+  position:absolute; left:0; right:0; bottom:0;
+  padding:10px 8px 5px; font-size:.6rem; color:#e8e0d8;
+  background:linear-gradient(transparent, rgba(0,0,0,0.75));
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.gallery-loading, .gallery-error {
+  display:flex; align-items:center; justify-content:center;
+  min-height:200px; color:var(--text-dim); font-size:.85rem;
+  text-align:center; padding:0 20px;
+}
+.spinner {
+  width:34px; height:34px; border-radius:50%;
+  border:3px solid var(--border); border-top-color:var(--amber);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+.modal-foot {
+  flex-shrink:0; padding:9px 18px;
+  border-top:1px solid var(--border);
+  font-size:.65rem; color:var(--text-faint); text-align:center;
+}
+
+/* TREE NOTE */
+.tree-note {
+  max-height:0; overflow:hidden;
+  transition:max-height .4s ease;
+  font-size:.8rem; color:var(--text-dim); line-height:1.5;
+}
+.tree-card.show .tree-note { max-height:200px; margin-top:8px; }
+.tree-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -440,6 +540,21 @@ body {
 <button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
+
+<!-- IMAGE GALLERY MODAL -->
+<div class="modal-overlay" id="gallery-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div style="min-width:0">
+        <div class="modal-title" id="gallery-title"></div>
+        <div class="modal-sci" id="gallery-sci"></div>
+      </div>
+      <button class="modal-close" onclick="closeGallery()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="gallery-body"></div>
+    <div class="modal-foot">Photos from iNaturalist · tap any image for full size</div>
+  </div>
+</div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
@@ -546,6 +661,78 @@ const trees = [
 ];
 
 // ============================================
+// IMAGE GALLERY DATA
+// iNaturalist taxon IDs — pre-resolved to the exact correct species
+// (e.g. African savanna elephant, not Asian). Verified against the API.
+// ============================================
+const mammalSci = {
+  "Lion":"Panthera leo","Leopard":"Panthera pardus","Cheetah":"Acinonyx jubatus",
+  "Spotted Hyena":"Crocuta crocuta","African Wild Dog":"Lycaon pictus",
+  "Black-backed Jackal":"Lupulella mesomelas","Side-striped Jackal":"Lupulella adusta",
+  "Honey Badger":"Mellivora capensis","African Wildcat":"Felis lybica",
+  "White-tailed Mongoose":"Ichneumia albicauda","Banded Mongoose":"Mungos mungo",
+  "Large-spotted Genet":"Genetta maculata","African Civet":"Civettictis civetta",
+  "Thick-tailed Bushbaby":"Otolemur crassicaudatus","Lesser Bushbaby":"Galago moholi",
+  "Chacma Baboon":"Papio ursinus","Vervet Monkey":"Chlorocebus pygerythrus",
+  "Black Rhino":"Diceros bicornis","White Rhino":"Ceratotherium simum",
+  "African Elephant":"Loxodonta africana","Hippopotamus":"Hippopotamus amphibius",
+  "Southern Giraffe":"Giraffa giraffa","African Buffalo":"Syncerus caffer",
+  "Blue Wildebeest":"Connochaetes taurinus","Greater Kudu":"Tragelaphus strepsiceros",
+  "Impala":"Aepyceros melampus","Common Reedbuck":"Redunca arundinum",
+  "Waterbuck":"Kobus ellipsiprymnus","Bushbuck":"Tragelaphus sylvaticus",
+  "Nyala":"Tragelaphus angasii","Common Duiker":"Sylvicapra grimmia",
+  "Red Duiker":"Cephalophus natalensis","Steenbok":"Raphicerus campestris",
+  "Suni":"Nesotragus moschatus","Plains Zebra":"Equus quagga",
+  "Warthog":"Phacochoerus africanus","Aardvark":"Orycteropus afer",
+  "Temminck's Ground Pangolin":"Smutsia temminckii","Scrub Hare":"Lepus saxatilis",
+  "African Porcupine":"Hystrix africaeaustralis",
+};
+const inatIds = {
+  // mammals
+  "Lion":41964,"Leopard":41963,"Cheetah":41955,"Spotted Hyena":41886,"African Wild Dog":42093,
+  "Black-backed Jackal":1210966,"Side-striped Jackal":1210965,"Honey Badger":41834,"African Wildcat":371414,
+  "White-tailed Mongoose":41939,"Banded Mongoose":41921,"Large-spotted Genet":1643992,"African Civet":41627,
+  "Thick-tailed Bushbaby":43567,"Lesser Bushbaby":43561,"Chacma Baboon":57556,"Vervet Monkey":68137,
+  "Black Rhino":43350,"White Rhino":43348,"African Elephant":43694,"Hippopotamus":42149,"Southern Giraffe":1510571,
+  "African Buffalo":42405,"Blue Wildebeest":42280,"Greater Kudu":42339,"Impala":42278,"Common Reedbuck":42305,
+  "Waterbuck":42328,"Bushbuck":1431867,"Nyala":42342,"Common Duiker":42424,"Red Duiker":1431002,"Steenbok":42375,
+  "Suni":74770,"Plains Zebra":43335,"Warthog":42122,"Aardvark":47062,"Temminck's Ground Pangolin":75083,
+  "Scrub Hare":43125,"African Porcupine":44173,
+  // trees (keyed by common name)
+  "White Milkwood":362175,"Leadwood":340408,"Tamboti":340253,"Green-thorn / Torchwood":340261,"Fever Tree":348763,
+  "Belly / Balloon Thorn":567325,"Magic Guarri":343032,"Red Bush-willow":340059,"Common Tree Euphorbia":334379,
+  "Jackalberry":340214,"Weeping Boer-bean":369448,"Sycamore Fig":340164,"Buffalo Thorn":340228,"Mopane":428749,
+  "Sickle-bush":129706,"African Wattle":138688,"Wild Date Palm":166729,
+};
+const treeNotes = {
+  "White Milkwood":"Dense, dark evergreen canopy; oozes milky latex when cut. A protected tree in South Africa — some are hundreds of years old.",
+  "Leadwood":"Very hard, heavy wood with grey, cracked 'crocodile-skin' bark. Long-lived; dead skeletons stand for decades.",
+  "Tamboti":"Poisonous milky latex — smoke from the wood taints food and irritates eyes. Prized scented, dark heartwood.",
+  "Green-thorn / Torchwood":"Distinctive fluted, buttressed trunk with forked spines. Seed kernels yield oil and soap.",
+  "Fever Tree":"Unmistakable smooth, lime-green to yellow powdery bark. Grows in damp, low-lying ground once wrongly blamed for malaria.",
+  "Belly / Balloon Thorn":"Inflated, balloon-like paired thorns give it its name. Favours deep sandy or calcrete soils.",
+  "Magic Guarri":"Drooping foliage; frayed twigs are used as natural toothbrushes ('chew-sticks'). Roots used in traditional medicine.",
+  "Red Bush-willow":"Twisted branches and 4-winged seeds. Leaf tip ends in a fine twisted point (apiculate). Very common on rocky slopes.",
+  "Common Tree Euphorbia":"Tall candelabra-shaped succulent tree. The milky latex is highly toxic and caustic.",
+  "Jackalberry":"Large tree often on termite mounds and riverbanks. Edible fruit is eaten by many animals and people.",
+  "Weeping Boer-bean":"Massed deep-red flowers drip so much nectar the tree seems to 'weep'. A magnet for birds and insects.",
+  "Sycamore Fig":"Big spreading fig with yellowish bark; figs grow directly on the trunk and branches. A keystone food source.",
+  "Buffalo Thorn":"Paired thorns — one straight, one hooked ('backward and forward'). Zigzag twigs aid identification.",
+  "Mopane":"Butterfly-shaped bifoliate leaves fold together in the heat. Dominant on clay soils; host to edible mopane worms.",
+  "Sickle-bush":"Two-tone 'Chinese lantern' flowers (pink and yellow). Twisted, sickle-shaped seed pods cluster on the branches.",
+  "African Wattle":"Crinkled yellow flowers and feathery leaves. Nicknamed 'rain tree' — spittlebugs make it drip moisture.",
+  "Wild Date Palm":"Clustering feather palm of riverbanks and wetlands. Bears small edible dates; fronds used for weaving.",
+};
+
+// name/common -> {title, sci} for the gallery modal, keyed by taxon id
+const galleryMeta = {};
+mammals.forEach(m => { const id = inatIds[m.name]; if(id) galleryMeta[id] = {title:m.name, sci:mammalSci[m.name]||''}; });
+trees.forEach(t => { const id = inatIds[t.common]; if(id) galleryMeta[id] = {title:t.common, sci:t.sci}; });
+
+// shared photo icon markup
+const IMG_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>';
+
+// ============================================
 // CATEGORIES
 // ============================================
 const catLabels = {predator:"Predator",primate:"Primate",herbivore:"Herbivore",small:"Small Carnivore / Nocturnal",other:"Other"};
@@ -600,7 +787,8 @@ function renderMammals() {
     <div class="card" data-idx="${i}" onclick="this.classList.toggle('open')">
       <div class="card-header">
         <div class="card-name">${m.name}</div>
-        <div style="display:flex;align-items:center;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px">
+          ${inatIds[m.name] ? `<button class="img-btn" title="View photos" aria-label="View photos of ${m.name}" onclick="event.stopPropagation();openGallery(${inatIds[m.name]})">${IMG_ICON}</button>` : ''}
           <span class="card-category ${catCss[m.cat]}">${catLabels[m.cat]}</span>
           <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
@@ -680,11 +868,15 @@ function renderTrees() {
   const container = document.getElementById('tree-cards');
   container.innerHTML = trees.map((t,i) => `
     <div class="tree-card" data-idx="${i}" onclick="this.classList.toggle('show')">
-      <div>
+      <div style="min-width:0;flex:1">
         <div class="tree-common">${t.common}</div>
         <div class="reveal-hint" style="margin-top:4px">Tap to reveal</div>
+        ${treeNotes[t.common] ? `<div class="tree-note">${treeNotes[t.common]}</div>` : ''}
       </div>
-      <div class="tree-sci">${t.sci}</div>
+      <div class="tree-right">
+        <div class="tree-sci">${t.sci}</div>
+        ${inatIds[t.common] ? `<button class="img-btn" title="View photos" aria-label="View photos of ${t.common}" onclick="event.stopPropagation();openGallery(${inatIds[t.common]})">${IMG_ICON}</button>` : ''}
+      </div>
     </div>
   `).join('');
 }
@@ -906,6 +1098,81 @@ function nextQuiz() {
   quiz.idx++;
   renderQuiz();
 }
+
+// ============================================
+// IMAGE GALLERY
+// ============================================
+const galleryCache = new Map();   // taxonId -> photos[] (session cache)
+let galleryAbort = null;          // in-flight fetch controller
+let currentGalleryId = null;      // guards against out-of-order responses
+
+function openGallery(id) {
+  const meta = galleryMeta[id] || {title:'', sci:''};
+  currentGalleryId = id;
+  document.getElementById('gallery-title').textContent = meta.title;
+  document.getElementById('gallery-sci').textContent = meta.sci;
+  document.getElementById('gallery-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  const body = document.getElementById('gallery-body');
+  if (galleryCache.has(id)) { renderGallery(id, galleryCache.get(id)); return; }
+
+  body.innerHTML = '<div class="gallery-loading"><div class="spinner"></div></div>';
+  if (galleryAbort) galleryAbort.abort();
+  galleryAbort = new AbortController();
+
+  fetch(`https://api.inaturalist.org/v1/taxa/${id}?locale=en`, {signal: galleryAbort.signal})
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      const t = data.results && data.results[0];
+      const photos = ((t && t.taxon_photos) || [])
+        .filter(p => p && p.photo && p.photo.url)
+        .slice(0, 8)
+        .map(p => ({
+          thumb: p.photo.url.replace('/square.', '/medium.'),
+          full:  p.photo.url.replace('/square.', '/large.'),
+          by:    p.photo.attribution_name || 'iNaturalist',
+          lic:   (p.photo.license_code || '').toUpperCase().replace('CC-', 'CC ')
+        }));
+      galleryCache.set(id, photos);
+      renderGallery(id, photos);
+    })
+    .catch(err => {
+      if (err.name === 'AbortError') return;
+      if (currentGalleryId !== id) return;
+      body.innerHTML = '<div class="gallery-error">Couldn’t load images.<br>Check your connection and try again.</div>';
+    });
+}
+
+function renderGallery(id, photos) {
+  if (currentGalleryId !== id) return;   // a newer gallery was opened
+  const body = document.getElementById('gallery-body');
+  if (!photos.length) {
+    body.innerHTML = '<div class="gallery-error">No photos available for this species.</div>';
+    return;
+  }
+  body.innerHTML = '<div class="gallery-grid">' + photos.map(p => `
+    <a class="gallery-item" href="${p.full}" target="_blank" rel="noopener noreferrer">
+      <img src="${p.thumb}" loading="lazy" decoding="async" alt=""
+           onerror="this.closest('.gallery-item').style.display='none'">
+      <span class="gallery-cap">© ${p.by}${p.lic ? ' · ' + p.lic : ''}</span>
+    </a>`).join('') + '</div>';
+}
+
+function closeGallery() {
+  currentGalleryId = null;
+  if (galleryAbort) { galleryAbort.abort(); galleryAbort = null; }
+  document.getElementById('gallery-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// close on overlay click (but not when clicking the modal itself) and on Esc
+document.getElementById('gallery-modal').addEventListener('click', e => {
+  if (e.target.id === 'gallery-modal') closeGallery();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && document.getElementById('gallery-modal').classList.contains('open')) closeGallery();
+});
 
 // ============================================
 // NAVIGATION
