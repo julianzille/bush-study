@@ -514,6 +514,193 @@ body.offline-mode .offline-badge {
   width: 14px;
   height: 14px;
 }
+
+/* COMPARE MODE */
+.compare-toggle {
+  padding:6px 14px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:20px; color:var(--text-dim);
+  font:500 .75rem 'Inter',sans-serif; cursor:pointer;
+  transition:all .2s; white-space:nowrap;
+}
+.compare-toggle.active {
+  background:var(--amber); color:#111; border-color:var(--amber);
+}
+
+.compare-add-btn {
+  flex-shrink:0;
+  width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:50%; color:var(--text-dim);
+  cursor:pointer; padding:0;
+  transition:all .2s;
+  font-size:.8rem;
+}
+.compare-add-btn:active { transform:scale(0.9); }
+.compare-add-btn.staged {
+  background:var(--amber); color:#111; border-color:var(--amber);
+}
+
+.compare-bar {
+  position:fixed; bottom:60px; left:12px; right:12px;
+  z-index:95;
+  background:rgba(26,26,26,0.95);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--amber-dim);
+  border-radius:var(--radius);
+  padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.5);
+  animation:slideUp .25s ease;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom,0));
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.compare-bar-text {
+  font-size:.8rem; color:var(--text); line-height:1.4;
+}
+.compare-bar-text strong { color:var(--amber); }
+.compare-bar-cancel {
+  flex-shrink:0; padding:6px 14px;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:20px; color:var(--text-dim);
+  font:500 .7rem 'Inter',sans-serif; cursor:pointer;
+  transition:all .2s;
+}
+.compare-bar-cancel:active { transform:scale(0.95); }
+
+.compare-container { padding:0 16px 20px; }
+
+.compare-picker {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; margin-bottom:16px;
+}
+.compare-slot {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px;
+  position:relative; min-height:100px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.compare-slot.filled { border-color:var(--amber-dim); }
+.compare-slot-label {
+  font-size:.65rem; font-weight:500; color:var(--text-faint);
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.compare-slot-name {
+  font-size:.95rem; font-weight:600; color:var(--text);
+}
+.compare-slot-placeholder {
+  font-size:.85rem; color:var(--text-faint); font-style:italic;
+}
+
+.compare-dropdown-wrap { position:relative; }
+.compare-search {
+  width:100%; padding:8px 12px;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--text);
+  font:400 .8rem 'Inter',sans-serif; outline:none;
+}
+.compare-search:focus { border-color:var(--amber-dim); }
+.compare-search::placeholder { color:var(--text-faint); }
+.compare-dropdown {
+  position:absolute; top:100%; left:0; right:0;
+  max-height:180px; overflow-y:auto;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:0 0 var(--radius-sm) var(--radius-sm);
+  z-index:60; display:none;
+}
+.compare-dropdown.open { display:block; }
+.compare-dropdown-item {
+  padding:8px 12px; font-size:.8rem; cursor:pointer;
+  color:var(--text-dim); transition:background .15s;
+}
+.compare-dropdown-item:hover {
+  background:var(--amber-glow); color:var(--text);
+}
+
+.compare-clear {
+  position:absolute; top:10px; right:10px;
+  width:22px; height:22px; border-radius:50%;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  color:var(--text-faint); font-size:.7rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.compare-clear:active { transform:scale(0.9); }
+
+.compare-results {
+  display:flex; flex-direction:column; gap:2px;
+}
+.compare-row {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; padding:12px;
+  background:var(--bg-card); border-radius:var(--radius-sm);
+}
+.compare-row-label {
+  grid-column:1/-1;
+  font-size:.65rem; font-weight:500; color:var(--amber-dim);
+  text-transform:uppercase; letter-spacing:.5px;
+  margin-bottom:4px; padding-bottom:4px;
+  border-bottom:1px solid var(--border);
+}
+.compare-cell {
+  font-size:.82rem; color:var(--text); line-height:1.5;
+}
+.compare-cell-header {
+  font-size:.7rem; font-weight:600; color:var(--text-dim);
+  margin-bottom:2px;
+}
+.compare-row.diff { border-left:3px solid var(--amber); }
+
+.compare-images-toggle {
+  display:flex; align-items:center; justify-content:center;
+  gap:8px; padding:10px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); margin-bottom:12px;
+  cursor:pointer; color:var(--text-dim);
+  font:500 .8rem 'Inter',sans-serif;
+  transition:all .2s; width:100%;
+}
+.compare-images-toggle:hover { color:var(--text); }
+.compare-images-toggle svg { width:16px; height:16px; }
+
+.compare-images-panel {
+  display:none;
+  grid-template-columns:1fr 1fr; gap:12px;
+  margin-bottom:16px;
+}
+.compare-images-panel.open { display:grid; }
+.compare-img-col {
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:var(--radius-sm); overflow:hidden;
+}
+.compare-img-col-header {
+  padding:10px 12px; font-size:.75rem; font-weight:600;
+  color:var(--text-dim); border-bottom:1px solid var(--border);
+  text-align:center;
+}
+.compare-img-col-body {
+  display:flex; flex-direction:column; gap:6px; padding:8px;
+  min-height:120px; align-items:center; justify-content:center;
+}
+.compare-img-col-body img {
+  width:100%; border-radius:6px; object-fit:cover;
+  aspect-ratio:4/3;
+}
+
+.compare-swap {
+  display:flex; align-items:center; justify-content:center;
+  padding:8px; margin-bottom:12px;
+  background:none; border:1px solid var(--border);
+  border-radius:var(--radius-sm); color:var(--text-dim);
+  font:500 .75rem 'Inter',sans-serif; cursor:pointer;
+  gap:6px; transition:all .2s; width:100%;
+}
+.compare-swap:hover { color:var(--amber); border-color:var(--amber-dim); }
+.compare-swap svg { width:14px; height:14px; }
 </style>
 </head>
 <body>
@@ -527,8 +714,13 @@ body.offline-mode .offline-badge {
 <!-- MAMMALS SECTION -->
 <div id="sec-mammals" class="section active">
   <div class="header">
-    <h1>🌍 Bush Study Guide</h1>
-    <div class="subtitle">Mammals • Tracks • Trees • Quiz</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <h1>🌍 Bush Study Guide</h1>
+        <div class="subtitle">Mammals • Tracks • Trees • Quiz</div>
+      </div>
+      <button class="compare-toggle" id="compare-toggle" onclick="toggleCompareMode()">⚖️ Compare</button>
+    </div>
   </div>
   <div class="search-wrap">
     <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -543,6 +735,39 @@ body.offline-mode .offline-badge {
     <button class="sort-btn" data-sort="_l" onclick="toggleSort('_l')">Lifespan</button>
   </div>
   <div class="counter" id="mammal-counter"></div>
+  <!-- COMPARE MODE -->
+  <div id="compare-container" class="compare-container" style="display:none">
+    <div class="compare-picker">
+      <div class="compare-slot" id="compare-slot-a">
+        <div class="compare-slot-label">Species A</div>
+        <div id="compare-name-a" class="compare-slot-placeholder">Select a mammal…</div>
+        <div class="compare-dropdown-wrap">
+          <input class="compare-search" id="compare-search-a" type="text" placeholder="Search…"
+                 oninput="filterCompareDropdown('a')" onfocus="openCompareDropdown('a')">
+          <div class="compare-dropdown" id="compare-dropdown-a"></div>
+        </div>
+        <button class="compare-clear" id="compare-clear-a" style="display:none"
+                onclick="clearCompareSlot('a')" aria-label="Clear">✕</button>
+      </div>
+      <div class="compare-slot" id="compare-slot-b">
+        <div class="compare-slot-label">Species B</div>
+        <div id="compare-name-b" class="compare-slot-placeholder">Select a mammal…</div>
+        <div class="compare-dropdown-wrap">
+          <input class="compare-search" id="compare-search-b" type="text" placeholder="Search…"
+                 oninput="filterCompareDropdown('b')" onfocus="openCompareDropdown('b')">
+          <div class="compare-dropdown" id="compare-dropdown-b"></div>
+        </div>
+        <button class="compare-clear" id="compare-clear-b" style="display:none"
+                onclick="clearCompareSlot('b')" aria-label="Clear">✕</button>
+      </div>
+    </div>
+    <button class="compare-swap" id="compare-swap" style="display:none" onclick="swapCompareSlots()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16l-4-4 4-4"/><path d="M17 8l4 4-4 4"/><line x1="3" y1="12" x2="21" y2="12"/></svg>
+      Swap
+    </button>
+    <div id="compare-images-section"></div>
+    <div id="compare-results" class="compare-results"></div>
+  </div>
   <div class="cards" id="mammal-cards"></div>
 </div>
 
@@ -595,6 +820,12 @@ body.offline-mode .offline-badge {
     <div class="modal-body" id="gallery-body"></div>
     <div class="modal-foot">Photos from iNaturalist · tap any image for full size</div>
   </div>
+</div>
+
+<!-- COMPARE BAR (floating, shown after first species staged) -->
+<div class="compare-bar" id="compare-bar" style="display:none">
+  <div class="compare-bar-text" id="compare-bar-text"></div>
+  <button class="compare-bar-cancel" onclick="cancelCompareStaging()">Cancel</button>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -830,6 +1061,7 @@ function renderMammals() {
       <div class="card-header">
         <div class="card-name">${m.name}</div>
         <div style="display:flex;align-items:center;gap:8px">
+          <button class="compare-add-btn${compareStagedName === m.name ? ' staged' : ''}" title="Add to compare" aria-label="Compare ${m.name}" onclick="event.stopPropagation();stageForCompare('${m.name.replace(/'/g, "\\'")}')">⚖️</button>
           ${inatIds[m.name] ? `<button class="img-btn" title="${isOnline ? 'View photos' : 'Photos offline'}" aria-label="View photos of ${m.name}" ${isOnline ? '' : 'disabled style="opacity:0.3;pointer-events:none"'} onclick="event.stopPropagation();openGallery(${inatIds[m.name]})">${IMG_ICON}</button>` : ''}
           <span class="card-category ${catCss[m.cat]}">${catLabels[m.cat]}</span>
           <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
@@ -1228,6 +1460,8 @@ document.querySelectorAll('.nav-btn').forEach(btn => {
     document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
     document.getElementById(`sec-${sec}`).classList.add('active');
     window.scrollTo({top:0});
+    if (compareMode) exitCompareMode();
+    if (compareStagedName) cancelCompareStaging();
     if(sec === 'quiz') showQuizMenu();
   });
 });
@@ -1279,6 +1513,337 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+// ============================================
+// COMPARE MODE
+// ============================================
+let compareMode = false;
+let compareStagedName = null;
+let compareSelection = { a: null, b: null };
+let compareImagesLoaded = false;
+
+function stageForCompare(name) {
+  const mammal = mammals.find(m => m.name === name);
+  if (!mammal) return;
+
+  if (compareStagedName === name) {
+    cancelCompareStaging();
+    return;
+  }
+
+  if (!compareStagedName) {
+    compareStagedName = name;
+    renderMammals();
+    showCompareBar(name);
+  } else {
+    const first = mammals.find(m => m.name === compareStagedName);
+    compareStagedName = null;
+    hideCompareBar();
+
+    compareSelection.a = first;
+    compareSelection.b = mammal;
+
+    compareMode = true;
+    document.getElementById('compare-toggle').classList.add('active');
+    showCompareView();
+    updateCompareSlotDisplay('a');
+    updateCompareSlotDisplay('b');
+    renderComparison();
+    document.getElementById('compare-swap').style.display = 'flex';
+  }
+}
+
+function showCompareBar(name) {
+  const bar = document.getElementById('compare-bar');
+  document.getElementById('compare-bar-text').innerHTML =
+    `<strong>${name}</strong> selected · tap another ⚖️ to compare`;
+  bar.style.display = 'flex';
+}
+
+function hideCompareBar() {
+  document.getElementById('compare-bar').style.display = 'none';
+}
+
+function cancelCompareStaging() {
+  compareStagedName = null;
+  hideCompareBar();
+  renderMammals();
+}
+
+function toggleCompareMode() {
+  compareMode = !compareMode;
+  document.getElementById('compare-toggle').classList.toggle('active', compareMode);
+
+  if (compareMode) {
+    if (compareStagedName) {
+      compareSelection.a = mammals.find(m => m.name === compareStagedName);
+      compareStagedName = null;
+      hideCompareBar();
+    }
+    showCompareView();
+    if (compareSelection.a) updateCompareSlotDisplay('a');
+    if (compareSelection.b) updateCompareSlotDisplay('b');
+    if (compareSelection.a && compareSelection.b) {
+      renderComparison();
+      document.getElementById('compare-swap').style.display = 'flex';
+    }
+  } else {
+    exitCompareMode();
+  }
+}
+
+function showCompareView() {
+  document.getElementById('compare-container').style.display = 'block';
+  const section = document.getElementById('sec-mammals');
+  ['.search-wrap','#mammal-filters','.sort-bar','.counter','#mammal-cards'].forEach(sel => {
+    const el = section.querySelector(sel);
+    if (el) el.style.display = 'none';
+  });
+}
+
+function exitCompareMode() {
+  compareMode = false;
+  compareStagedName = null;
+  compareSelection = { a: null, b: null };
+  hideCompareBar();
+  document.getElementById('compare-toggle').classList.remove('active');
+  document.getElementById('compare-container').style.display = 'none';
+  document.getElementById('compare-results').innerHTML = '';
+  document.getElementById('compare-images-section').innerHTML = '';
+  document.getElementById('compare-swap').style.display = 'none';
+
+  const section = document.getElementById('sec-mammals');
+  ['.search-wrap','#mammal-filters','.sort-bar','.counter','#mammal-cards'].forEach(sel => {
+    const el = section.querySelector(sel);
+    if (el) el.style.display = '';
+  });
+  // Reset slot displays
+  ['a','b'].forEach(slot => {
+    document.getElementById(`compare-name-${slot}`).textContent = 'Select a mammal…';
+    document.getElementById(`compare-name-${slot}`).className = 'compare-slot-placeholder';
+    document.getElementById(`compare-slot-${slot}`).classList.remove('filled');
+    document.getElementById(`compare-clear-${slot}`).style.display = 'none';
+    document.getElementById(`compare-search-${slot}`).value = '';
+    document.getElementById(`compare-dropdown-${slot}`).classList.remove('open');
+  });
+  renderMammals();
+}
+
+function openCompareDropdown(slot) {
+  filterCompareDropdown(slot);
+  document.getElementById(`compare-dropdown-${slot}`).classList.add('open');
+}
+
+function filterCompareDropdown(slot) {
+  const search = document.getElementById(`compare-search-${slot}`).value.toLowerCase();
+  const otherSlot = slot === 'a' ? 'b' : 'a';
+  const otherName = compareSelection[otherSlot] ? compareSelection[otherSlot].name : null;
+
+  const filtered = mammals.filter(m => {
+    if (m.name === otherName) return false;
+    return !search || m.name.toLowerCase().includes(search);
+  });
+
+  const dropdown = document.getElementById(`compare-dropdown-${slot}`);
+  dropdown.innerHTML = filtered.map(m =>
+    `<div class="compare-dropdown-item" onclick="selectCompareSpecies('${slot}','${m.name.replace(/'/g, "\\'")}')">` + m.name + `</div>`
+  ).join('');
+  dropdown.classList.add('open');
+}
+
+function selectCompareSpecies(slot, name) {
+  const mammal = mammals.find(m => m.name === name);
+  if (!mammal) return;
+  compareSelection[slot] = mammal;
+  updateCompareSlotDisplay(slot);
+  document.getElementById(`compare-search-${slot}`).value = '';
+  document.getElementById(`compare-dropdown-${slot}`).classList.remove('open');
+
+  if (compareSelection.a && compareSelection.b) {
+    renderComparison();
+    document.getElementById('compare-swap').style.display = 'flex';
+  }
+}
+
+function updateCompareSlotDisplay(slot) {
+  const m = compareSelection[slot];
+  const nameEl = document.getElementById(`compare-name-${slot}`);
+  const slotEl = document.getElementById(`compare-slot-${slot}`);
+  const clearEl = document.getElementById(`compare-clear-${slot}`);
+  if (m) {
+    nameEl.textContent = m.name;
+    nameEl.className = 'compare-slot-name';
+    slotEl.classList.add('filled');
+    clearEl.style.display = 'flex';
+  } else {
+    nameEl.textContent = 'Select a mammal…';
+    nameEl.className = 'compare-slot-placeholder';
+    slotEl.classList.remove('filled');
+    clearEl.style.display = 'none';
+  }
+}
+
+function clearCompareSlot(slot) {
+  compareSelection[slot] = null;
+  updateCompareSlotDisplay(slot);
+  document.getElementById(`compare-search-${slot}`).value = '';
+  document.getElementById(`compare-dropdown-${slot}`).classList.remove('open');
+  document.getElementById('compare-results').innerHTML = '';
+  document.getElementById('compare-images-section').innerHTML = '';
+  document.getElementById('compare-swap').style.display = 'none';
+}
+
+function swapCompareSlots() {
+  const temp = compareSelection.a;
+  compareSelection.a = compareSelection.b;
+  compareSelection.b = temp;
+  updateCompareSlotDisplay('a');
+  updateCompareSlotDisplay('b');
+  if (compareSelection.a && compareSelection.b) renderComparison();
+}
+
+function renderComparison() {
+  const a = compareSelection.a;
+  const b = compareSelection.b;
+  if (!a || !b) return;
+
+  compareImagesLoaded = false;
+
+  const fields = [
+    { key:'cat', label:'Category', fmt: v => catLabels[v] || v },
+    { key:'weight', label:'Adult Weight' },
+    { key:'lifespan', label:'Lifespan' },
+    { key:'gestation', label:'Gestation' },
+    { key:'weaning', label:'Weaning Age' },
+    { key:'territorial', label:'Territorial' },
+    { key:'social', label:'Social Structure' },
+    { key:'food', label:'Diet / Food' },
+  ];
+
+  const resultsHTML = fields.map(f => {
+    const va = f.fmt ? f.fmt(a[f.key]) : a[f.key];
+    const vb = f.fmt ? f.fmt(b[f.key]) : b[f.key];
+    const isDiff = va !== vb;
+    return `
+      <div class="compare-row${isDiff ? ' diff' : ''}">
+        <div class="compare-row-label">${f.label}</div>
+        <div class="compare-cell">
+          <div class="compare-cell-header">${a.name}</div>
+          ${va}
+        </div>
+        <div class="compare-cell">
+          <div class="compare-cell-header">${b.name}</div>
+          ${vb}
+        </div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('compare-results').innerHTML = resultsHTML;
+  renderCompareImages();
+}
+
+function renderCompareImages() {
+  const a = compareSelection.a;
+  const b = compareSelection.b;
+  const isOnline = navigator.onLine;
+  const aId = inatIds[a.name];
+  const bId = inatIds[b.name];
+
+  const section = document.getElementById('compare-images-section');
+  if (!aId && !bId) { section.innerHTML = ''; return; }
+
+  section.innerHTML = `
+    <button class="compare-images-toggle" onclick="toggleCompareImages()"
+            ${!isOnline ? 'disabled style="opacity:0.4;pointer-events:none"' : ''}>
+      ${IMG_ICON}
+      <span>${isOnline ? 'View images side by side' : 'Images unavailable offline'}</span>
+      <svg id="compare-img-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+           style="transition:transform .3s"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="compare-images-panel" id="compare-images-panel">
+      <div class="compare-img-col">
+        <div class="compare-img-col-header">${a.name}</div>
+        <div class="compare-img-col-body" id="compare-img-a">
+          <div class="gallery-loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+      <div class="compare-img-col">
+        <div class="compare-img-col-header">${b.name}</div>
+        <div class="compare-img-col-body" id="compare-img-b">
+          <div class="gallery-loading"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function toggleCompareImages() {
+  const panel = document.getElementById('compare-images-panel');
+  const chevron = document.getElementById('compare-img-chevron');
+  const isOpen = panel.classList.toggle('open');
+  chevron.style.transform = isOpen ? 'rotate(180deg)' : '';
+
+  if (isOpen && !compareImagesLoaded) {
+    compareImagesLoaded = true;
+    loadCompareImage('a');
+    loadCompareImage('b');
+  }
+}
+
+function loadCompareImage(slot) {
+  const mammal = compareSelection[slot];
+  if (!mammal) return;
+  const id = inatIds[mammal.name];
+  if (!id) {
+    document.getElementById(`compare-img-${slot}`).innerHTML =
+      '<div class="gallery-error" style="font-size:.75rem">No photos available</div>';
+    return;
+  }
+
+  if (galleryCache.has(id)) {
+    renderCompareSlotImages(slot, galleryCache.get(id));
+    return;
+  }
+
+  fetch(`https://api.inaturalist.org/v1/taxa/${id}?locale=en`)
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(data => {
+      const t = data.results && data.results[0];
+      const photos = ((t && t.taxon_photos) || [])
+        .filter(p => p && p.photo && p.photo.url)
+        .slice(0, 4)
+        .map(p => ({
+          thumb: p.photo.url.replace('/square.', '/medium.'),
+          full:  p.photo.url.replace('/square.', '/large.'),
+        }));
+      galleryCache.set(id, photos);
+      renderCompareSlotImages(slot, photos);
+    })
+    .catch(() => {
+      document.getElementById(`compare-img-${slot}`).innerHTML =
+        '<div class="gallery-error" style="font-size:.75rem">Couldn\'t load images</div>';
+    });
+}
+
+function renderCompareSlotImages(slot, photos) {
+  const el = document.getElementById(`compare-img-${slot}`);
+  if (!photos.length) {
+    el.innerHTML = '<div class="gallery-error" style="font-size:.75rem">No photos available</div>';
+    return;
+  }
+  el.innerHTML = photos.map(p =>
+    `<a href="${p.full}" target="_blank" rel="noopener noreferrer">
+       <img src="${p.thumb}" loading="lazy" decoding="async" alt=""
+            onerror="this.parentElement.style.display='none'">
+     </a>`
+  ).join('');
+}
+
+// Close compare dropdowns on outside click
+document.addEventListener('click', e => {
+  if (!e.target.closest('.compare-dropdown-wrap')) {
+    document.querySelectorAll('.compare-dropdown').forEach(d => d.classList.remove('open'));
+  }
+});
 
 // ============================================
 // INIT
