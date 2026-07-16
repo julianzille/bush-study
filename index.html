@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="description" content="African wildlife and tree study guide for field guide training">
 <title>Bush Study Guide</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f0f0f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -479,9 +481,48 @@ body {
 }
 .tree-card.show .tree-note { max-height:200px; margin-top:8px; }
 .tree-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+
+/* OFFLINE BADGE */
+.offline-badge {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 150;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(196, 93, 44, 0.2);
+  color: #e07040;
+  border: 1px solid rgba(196, 93, 44, 0.4);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: var(--shadow);
+}
+body.offline-mode .offline-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+.offline-badge svg {
+  width: 14px;
+  height: 14px;
+}
 </style>
 </head>
 <body>
+
+<!-- OFFLINE BADGE -->
+<div class="offline-badge" id="offline-badge">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.5M5 12.5a10.94 10.94 0 015.83-2.84M8.53 16.03a6 6 0 015.66 0M12 20h.01"/></svg>
+  <span>Offline Mode</span>
+</div>
 
 <!-- MAMMALS SECTION -->
 <div id="sec-mammals" class="section active">
@@ -769,6 +810,7 @@ function updateSortButtons() {
 function renderMammals() {
   const search = document.getElementById('mammal-search').value.toLowerCase();
   const container = document.getElementById('mammal-cards');
+  const isOnline = navigator.onLine;
   let filtered = mammals.filter(m => {
     const matchCat = activeMammalFilter === 'all' || m.cat === activeMammalFilter;
     const matchSearch = !search || m.name.toLowerCase().includes(search);
@@ -788,7 +830,7 @@ function renderMammals() {
       <div class="card-header">
         <div class="card-name">${m.name}</div>
         <div style="display:flex;align-items:center;gap:8px">
-          ${inatIds[m.name] ? `<button class="img-btn" title="View photos" aria-label="View photos of ${m.name}" onclick="event.stopPropagation();openGallery(${inatIds[m.name]})">${IMG_ICON}</button>` : ''}
+          ${inatIds[m.name] ? `<button class="img-btn" title="${isOnline ? 'View photos' : 'Photos offline'}" aria-label="View photos of ${m.name}" ${isOnline ? '' : 'disabled style="opacity:0.3;pointer-events:none"'} onclick="event.stopPropagation();openGallery(${inatIds[m.name]})">${IMG_ICON}</button>` : ''}
           <span class="card-category ${catCss[m.cat]}">${catLabels[m.cat]}</span>
           <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
@@ -866,6 +908,7 @@ function initTrackFilters() {
 let allTreesShown = false;
 function renderTrees() {
   const container = document.getElementById('tree-cards');
+  const isOnline = navigator.onLine;
   container.innerHTML = trees.map((t,i) => `
     <div class="tree-card" data-idx="${i}" onclick="this.classList.toggle('show')">
       <div style="min-width:0;flex:1">
@@ -875,7 +918,7 @@ function renderTrees() {
       </div>
       <div class="tree-right">
         <div class="tree-sci">${t.sci}</div>
-        ${inatIds[t.common] ? `<button class="img-btn" title="View photos" aria-label="View photos of ${t.common}" onclick="event.stopPropagation();openGallery(${inatIds[t.common]})">${IMG_ICON}</button>` : ''}
+        ${inatIds[t.common] ? `<button class="img-btn" title="${isOnline ? 'View photos' : 'Photos offline'}" aria-label="View photos of ${t.common}" ${isOnline ? '' : 'disabled style="opacity:0.3;pointer-events:none"'} onclick="event.stopPropagation();openGallery(${inatIds[t.common]})">${IMG_ICON}</button>` : ''}
       </div>
     </div>
   `).join('');
@@ -1200,6 +1243,44 @@ window.addEventListener('scroll', () => {
 document.getElementById('mammal-search').addEventListener('input', renderMammals);
 
 // ============================================
+// OFFLINE MODE / PWA
+// ============================================
+function updateOnlineStatus() {
+  const isOnline = navigator.onLine;
+  document.body.classList.toggle('offline-mode', !isOnline);
+  
+  // Update all photo buttons dynamically
+  document.querySelectorAll('.img-btn').forEach(btn => {
+    if (isOnline) {
+      btn.removeAttribute('disabled');
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+      btn.title = 'View photos';
+    } else {
+      btn.setAttribute('disabled', 'true');
+      btn.style.opacity = '0.3';
+      btn.style.pointerEvents = 'none';
+      btn.title = 'Photos offline';
+    }
+  });
+}
+
+window.addEventListener('online', updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('[Service Worker] Registered successfully:', reg.scope);
+      })
+      .catch(err => {
+        console.log('[Service Worker] Registration failed:', err);
+      });
+  });
+}
+
+// ============================================
 // INIT
 // ============================================
 initMammalFilters();
@@ -1207,6 +1288,7 @@ initTrackFilters();
 renderMammals();
 renderTracks();
 renderTrees();
+updateOnlineStatus();
 </script>
 </body>
 </html>

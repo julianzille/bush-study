@@ -1,0 +1,16 @@
+{
+  "short_name": "Bush Study",
+  "name": "Bush Study Guide",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e8a838'><circle cx='12' cy='12' r='10' stroke='%23e8a838' stroke-width='2' fill='none'/><circle cx='8' cy='9' r='1.5'/><circle cx='16' cy='9' r='1.5'/><path d='M8 14s1.5 2 4 2 4-2 4-2' stroke='%23e8a838' stroke-width='2' stroke-linecap='round' fill='none'/></svg>",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0f0f0f",
+  "theme_color": "#0f0f0f",
+  "display": "standalone",
+  "orientation": "portrait"
+}
