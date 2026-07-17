@@ -701,6 +701,362 @@ body.offline-mode .offline-badge {
 }
 .compare-swap:hover { color:var(--amber); border-color:var(--amber-dim); }
 .compare-swap svg { width:14px; height:14px; }
+
+/* QUIZ COUNT PICKER */
+.quiz-count-picker {
+  display:flex; gap:8px; margin:16px 0;
+  justify-content:center;
+}
+.quiz-count-btn {
+  padding:10px 22px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text-dim);
+  font:600 .85rem 'Inter',sans-serif;
+  cursor:pointer; transition:all .2s;
+}
+.quiz-count-btn:active { transform:scale(0.95); }
+.quiz-count-btn:hover { border-color:var(--amber-dim); color:var(--text); }
+
+/* QUIZ MODE GRID */
+.quiz-mode-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; width:100%;
+}
+.quiz-mode-card {
+  padding:16px 12px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  cursor:pointer; transition:all .2s;
+  text-align:center;
+}
+.quiz-mode-card:active { transform:scale(0.97); }
+.quiz-mode-card:hover { border-color:var(--amber-dim); }
+.quiz-mode-icon { font-size:1.5rem; margin-bottom:8px; }
+.quiz-mode-title {
+  font-size:.8rem; font-weight:600;
+  color:var(--text); margin-bottom:4px;
+}
+.quiz-mode-desc {
+  font-size:.65rem; color:var(--text-dim); line-height:1.3;
+}
+
+/* QUIZ CATEGORY HEADER */
+.quiz-cat-header {
+  font-size:.7rem; font-weight:600;
+  color:var(--text-faint); text-transform:uppercase;
+  letter-spacing:1px; padding:16px 0 8px;
+}
+
+/* FLASHCARD */
+.flashcard-container {
+  perspective:1000px;
+  width:100%; min-height:220px;
+  margin-bottom:16px;
+}
+.flashcard {
+  width:100%; min-height:220px;
+  position:relative;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  transition:transform .5s ease;
+}
+.flashcard.flipped { transform:rotateY(180deg); }
+.flashcard-face {
+  position:absolute; inset:0;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  background:var(--bg-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px 20px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  text-align:center;
+}
+.flashcard-back { transform:rotateY(180deg); }
+.flashcard-mammal {
+  font-size:1.3rem; font-weight:700;
+  background:linear-gradient(135deg,var(--amber),var(--burnt));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text; margin-bottom:8px;
+}
+.flashcard-prompt {
+  font-size:.85rem; color:var(--text-dim);
+  text-transform:uppercase; letter-spacing:.5px;
+}
+.flashcard-answer {
+  font-size:1.05rem; font-weight:600;
+  color:var(--text); line-height:1.5;
+  max-width:92%;
+}
+.flashcard-field {
+  font-size:.7rem; color:var(--amber-dim);
+  text-transform:uppercase; letter-spacing:.5px;
+  margin-bottom:8px;
+}
+.flashcard-hint {
+  font-size:.75rem; color:var(--text-faint); margin-top:16px;
+}
+
+/* SRS BUTTONS */
+.srs-buttons { display:flex; gap:8px; width:100%; }
+.srs-btn {
+  flex:1; padding:12px 8px;
+  border:none; border-radius:var(--radius-sm);
+  font:600 .8rem 'Inter',sans-serif;
+  cursor:pointer; transition:all .2s;
+  text-align:center;
+}
+.srs-btn:active { transform:scale(0.95); }
+.srs-again { background:rgba(196,93,44,0.3); color:#e08060; }
+.srs-hard { background:rgba(232,168,56,0.2); color:var(--amber); }
+.srs-easy { background:rgba(107,143,113,0.3); color:#a0e0a8; }
+
+/* FILL IN BLANK */
+.fib-input-wrap {
+  display:flex; gap:10px; width:100%; margin-top:16px;
+}
+.fib-input {
+  flex:1; padding:14px 16px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text);
+  font:400 .9rem 'Inter',sans-serif;
+  outline:none; transition:border-color .2s;
+}
+.fib-input:focus { border-color:var(--amber-dim); }
+.fib-input::placeholder { color:var(--text-faint); }
+.fib-submit {
+  padding:14px 20px;
+  background:var(--amber); color:#111;
+  border:none; border-radius:var(--radius-sm);
+  font:600 .85rem 'Inter',sans-serif;
+  cursor:pointer; transition:all .2s; flex-shrink:0;
+}
+.fib-submit:active { transform:scale(0.95); }
+.fib-result {
+  margin-top:12px; padding:12px;
+  border-radius:var(--radius-sm);
+  font-size:.85rem; line-height:1.5;
+  width:100%; text-align:left;
+}
+.fib-result.correct {
+  background:rgba(107,143,113,0.2);
+  border:1px solid var(--sage); color:#a0e0a8;
+}
+.fib-result.wrong {
+  background:rgba(196,93,44,0.15);
+  border:1px solid var(--burnt); color:#e08060;
+}
+
+/* MATCH COLUMNS */
+.match-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:12px; width:100%;
+}
+.match-column {
+  display:flex; flex-direction:column; gap:8px;
+}
+.match-col-label {
+  font-size:.65rem; font-weight:600;
+  color:var(--text-faint); text-transform:uppercase;
+  letter-spacing:.5px; text-align:center; padding-bottom:4px;
+}
+.match-item {
+  padding:12px;
+  background:var(--bg-elevated);
+  border:2px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text); font-size:.8rem;
+  cursor:pointer; transition:all .2s;
+  text-align:center; line-height:1.3;
+  min-height:44px;
+  display:flex; align-items:center; justify-content:center;
+}
+.match-item:active { transform:scale(0.96); }
+.match-item.selected {
+  border-color:var(--amber);
+  background:var(--amber-glow);
+  box-shadow:0 0 12px var(--amber-glow);
+}
+.match-item.matched-correct {
+  border-color:var(--sage);
+  background:rgba(107,143,113,0.2);
+  color:#a0e0a8;
+  pointer-events:none; opacity:0.7;
+}
+.match-item.matched-wrong {
+  border-color:var(--burnt);
+  background:rgba(196,93,44,0.15);
+  color:#e08060;
+  animation:shake .4s ease;
+}
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  75%{transform:translateX(6px)}
+}
+
+/* RANKING */
+.rank-list {
+  display:flex; flex-direction:column;
+  gap:6px; width:100%;
+}
+.rank-prompt {
+  font-size:.85rem; color:var(--text-dim);
+  text-align:center; margin-bottom:8px;
+}
+.rank-item {
+  display:flex; align-items:center; gap:10px;
+  padding:12px 14px;
+  background:var(--bg-elevated);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text); font-size:.9rem;
+  font-weight:500; transition:all .2s;
+  user-select:none; -webkit-user-select:none;
+}
+.rank-item.correct-pos {
+  border-color:var(--sage); background:rgba(107,143,113,0.15);
+}
+.rank-item.wrong-pos {
+  border-color:var(--burnt); background:rgba(196,93,44,0.1);
+}
+.rank-num {
+  width:24px; height:24px;
+  background:var(--bg-card); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.7rem; font-weight:700;
+  color:var(--amber); flex-shrink:0;
+}
+.rank-arrows {
+  display:flex; flex-direction:column;
+  gap:2px; margin-left:auto; flex-shrink:0;
+}
+.rank-arrow {
+  width:28px; height:22px;
+  background:var(--bg-card); border:1px solid var(--border);
+  border-radius:6px; color:var(--text-dim);
+  font-size:.7rem; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all .15s;
+}
+.rank-arrow:active {
+  background:var(--amber); color:#111; transform:scale(0.9);
+}
+.rank-value {
+  font-size:.7rem; color:var(--text-faint); margin-left:4px;
+}
+
+/* TRUE/FALSE */
+.tf-statement {
+  font-size:1.05rem; font-weight:500;
+  line-height:1.5; margin-bottom:20px;
+  text-align:center;
+}
+.tf-buttons { display:flex; gap:12px; width:100%; }
+.tf-btn {
+  flex:1; padding:16px;
+  border:2px solid var(--border);
+  border-radius:var(--radius-sm);
+  font:700 1rem 'Inter',sans-serif;
+  cursor:pointer; transition:all .2s;
+  text-align:center; background:var(--bg-elevated);
+}
+.tf-btn:active { transform:scale(0.95); }
+.tf-true { color:var(--sage); }
+.tf-false { color:var(--burnt); }
+.tf-btn.sel-correct {
+  background:rgba(107,143,113,0.3); border-color:var(--sage);
+}
+.tf-btn.sel-wrong {
+  background:rgba(196,93,44,0.2); border-color:var(--burnt);
+}
+.tf-explanation {
+  margin-top:12px; padding:10px;
+  background:var(--bg-elevated);
+  border-radius:var(--radius-sm);
+  font-size:.8rem; color:var(--text-dim);
+  text-align:left; width:100%; line-height:1.4;
+}
+
+/* INLINE STUDY MODE */
+.study-btn {
+  flex-shrink:0; width:30px; height:30px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--bg-elevated); border:1px solid var(--border);
+  border-radius:50%; color:var(--amber);
+  cursor:pointer; padding:0;
+  transition:background .2s, transform .1s;
+  font-size:.8rem;
+}
+.study-btn:active { transform:scale(0.9); background:var(--amber-glow); }
+.study-btn.active {
+  background:var(--amber); color:#111; border-color:var(--amber);
+}
+.stat-hidden .stat-value {
+  filter:blur(8px);
+  user-select:none; -webkit-user-select:none;
+  cursor:pointer; transition:filter .3s;
+}
+.stat-hidden .stat-value.revealed {
+  filter:none; cursor:default;
+}
+.stat-hidden .stat {
+  position:relative;
+}
+.reveal-label {
+  position:absolute;
+  font-size:.6rem; color:var(--amber-dim);
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none; opacity:0.9;
+  text-transform:uppercase; letter-spacing:.5px;
+  font-weight:600;
+}
+.stat-value.revealed + .reveal-label { display:none; }
+.study-progress {
+  display:flex; align-items:center; gap:8px;
+  padding:10px 12px; margin-top:10px;
+  background:var(--bg-elevated);
+  border-radius:var(--radius-sm);
+  font-size:.75rem; color:var(--text-dim);
+}
+.study-progress-fill {
+  flex:1; height:4px;
+  background:var(--border); border-radius:2px;
+  overflow:hidden;
+}
+.study-progress-bar {
+  height:100%; background:var(--sage);
+  border-radius:2px; transition:width .3s;
+}
+
+/* QUIZ MISTAKES REVIEW */
+.mistakes-list {
+  display:flex; flex-direction:column;
+  gap:8px; width:100%; margin-top:8px;
+}
+.mistake-item {
+  padding:12px;
+  background:var(--bg-elevated);
+  border-radius:var(--radius-sm);
+  border-left:3px solid var(--burnt);
+  text-align:left;
+}
+.mistake-q {
+  font-size:.8rem; color:var(--text-dim); margin-bottom:4px;
+}
+.mistake-correct {
+  font-size:.85rem; color:var(--sage); font-weight:500;
+}
+.mistake-yours {
+  font-size:.75rem; color:var(--burnt); margin-top:2px;
+}
 </style>
 </head>
 <body>
@@ -1061,6 +1417,7 @@ function renderMammals() {
       <div class="card-header">
         <div class="card-name">${m.name}</div>
         <div style="display:flex;align-items:center;gap:8px">
+          <button class="study-btn" title="Study mode" aria-label="Study ${m.name}" onclick="event.stopPropagation();toggleStudyMode(event)">🧠</button>
           <button class="compare-add-btn${compareStagedName === m.name ? ' staged' : ''}" title="Add to compare" aria-label="Compare ${m.name}" onclick="event.stopPropagation();stageForCompare('${m.name.replace(/'/g, "\\'")}')">⚖️</button>
           ${inatIds[m.name] ? `<button class="img-btn" title="${isOnline ? 'View photos' : 'Photos offline'}" aria-label="View photos of ${m.name}" ${isOnline ? '' : 'disabled style="opacity:0.3;pointer-events:none"'} onclick="event.stopPropagation();openGallery(${inatIds[m.name]})">${IMG_ICON}</button>` : ''}
           <span class="card-category ${catCss[m.cat]}">${catLabels[m.cat]}</span>
@@ -1095,6 +1452,52 @@ function initMammalFilters() {
     activeMammalFilter = btn.dataset.cat;
     renderMammals();
   });
+}
+
+// ============================================
+// INLINE STUDY MODE
+// ============================================
+function toggleStudyMode(event) {
+  const card = event.target.closest('.card');
+  if (!card) return;
+  const btn = card.querySelector('.study-btn');
+  const isActive = card.classList.contains('study-active');
+  if (isActive) {
+    card.classList.remove('study-active');
+    const grid = card.querySelector('.stat-grid');
+    if (grid) grid.classList.remove('stat-hidden');
+    card.querySelectorAll('.stat-value').forEach(v => { v.classList.remove('revealed'); v.onclick = null; });
+    card.querySelectorAll('.reveal-label').forEach(l => l.remove());
+    const prog = card.querySelector('.study-progress');
+    if (prog) prog.remove();
+    if (btn) btn.classList.remove('active');
+  } else {
+    card.classList.add('open', 'study-active');
+    const grid = card.querySelector('.stat-grid');
+    if (grid) grid.classList.add('stat-hidden');
+    card.querySelectorAll('.stat-value').forEach(v => {
+      v.classList.remove('revealed');
+      const lbl = document.createElement('span');
+      lbl.className = 'reveal-label';
+      lbl.textContent = 'tap to reveal';
+      v.parentElement.appendChild(lbl);
+      v.onclick = function(e) { e.stopPropagation(); revealStudyStat(this, card); };
+    });
+    if (btn) btn.classList.add('active');
+    const total = card.querySelectorAll('.stat-value').length;
+    const progHtml = `<div class="study-progress"><span class="sp-count">0/${total}</span><div class="study-progress-fill"><div class="study-progress-bar" style="width:0%"></div></div></div>`;
+    card.querySelector('.card-body-inner').insertAdjacentHTML('beforeend', progHtml);
+  }
+}
+function revealStudyStat(el, card) {
+  if (el.classList.contains('revealed')) return;
+  el.classList.add('revealed');
+  const total = card.querySelectorAll('.stat-value').length;
+  const revealed = card.querySelectorAll('.stat-value.revealed').length;
+  const cnt = card.querySelector('.sp-count');
+  if (cnt) cnt.textContent = `${revealed}/${total}`;
+  const bar = card.querySelector('.study-progress-bar');
+  if (bar) bar.style.width = `${(revealed/total)*100}%`;
 }
 
 // ============================================
@@ -1164,169 +1567,259 @@ function toggleAllTrees() {
 }
 
 // ============================================
-// QUIZ ENGINE
+// QUIZ ENGINE (OVERHAULED)
 // ============================================
-let quiz = { type:null, questions:[], idx:0, score:0, wrong:0, answered:false };
+let quiz = { type:null, questions:[], idx:0, score:0, wrong:0, answered:false, mistakes:[], count:20 };
 
+// --- SRS (Spaced Repetition) ---
+function getSRS() {
+  try { return JSON.parse(localStorage.getItem('bush_srs') || '{}'); } catch(e) { return {}; }
+}
+function saveSRS(data) { localStorage.setItem('bush_srs', JSON.stringify(data)); }
+function srsKey(mammal, field) { return mammal + '|' + field; }
+function srsRate(mammal, field, rating) {
+  const data = getSRS();
+  const k = srsKey(mammal, field);
+  const cur = data[k] || { box:0, lastReview:0 };
+  if (rating === 'again') cur.box = 0;
+  else if (rating === 'hard') cur.box = Math.max(0, Math.min(cur.box + 1, 2));
+  else if (rating === 'easy') cur.box = Math.min(cur.box + 2, 4);
+  cur.lastReview = Date.now();
+  data[k] = cur;
+  saveSRS(data);
+}
+function getSRSPrioritized() {
+  const data = getSRS();
+  const fields = ['lifespan','weight','gestation','weaning','food','social','territorial'];
+  const cards = [];
+  for (const m of mammals) {
+    for (const f of fields) {
+      const k = srsKey(m.name, f);
+      const srs = data[k] || { box:0, lastReview:0 };
+      cards.push({ mammal:m, field:f, box:srs.box, lastReview:srs.lastReview });
+    }
+  }
+  cards.sort((a,b) => a.box - b.box || a.lastReview - b.lastReview);
+  return cards;
+}
+
+// --- UTILITIES ---
+function shuffle(arr) {
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function pickRandom(arr, n, exclude) {
+  const pool = arr.filter(x => x !== exclude);
+  return shuffle(pool).slice(0, n);
+}
+function sliceToCount(arr, count) {
+  return count === 'all' ? arr : arr.slice(0, Math.min(parseInt(count), arr.length));
+}
+
+// --- QUIZ MENU ---
 function showQuizMenu() {
+  const srs = getSRS();
+  const totalCards = mammals.length * 7;
+  const mastered = Object.values(srs).filter(s => s.box >= 3).length;
+  const dueCards = totalCards - mastered;
   document.getElementById('quiz-area').innerHTML = `
-    <div class="quiz-card">
+    <div class="quiz-card" style="padding:20px 16px">
       <div class="quiz-question">Choose a Quiz</div>
-      <div class="quiz-sub">Test your knowledge across different categories</div>
+      <div class="quiz-sub">Test and reinforce your knowledge</div>
+      <div class="quiz-cat-header" style="width:100%;text-align:left">🦁 Mammal Quizzes</div>
+      <div class="quiz-mode-grid">
+        <div class="quiz-mode-card" onclick="showCountPicker('mammal-facts')">
+          <div class="quiz-mode-icon">📝</div>
+          <div class="quiz-mode-title">Multiple Choice</div>
+          <div class="quiz-mode-desc">Gestation, weight, diet & more</div>
+        </div>
+        <div class="quiz-mode-card" onclick="startFlashcards()">
+          <div class="quiz-mode-icon">🔄</div>
+          <div class="quiz-mode-title">Flashcards</div>
+          <div class="quiz-mode-desc">Spaced repetition · ${dueCards} due</div>
+        </div>
+        <div class="quiz-mode-card" onclick="showCountPicker('fill-blank')">
+          <div class="quiz-mode-icon">✏️</div>
+          <div class="quiz-mode-title">Fill in Blank</div>
+          <div class="quiz-mode-desc">Type the numeric answer</div>
+        </div>
+        <div class="quiz-mode-card" onclick="startMatchPairs()">
+          <div class="quiz-mode-icon">🔗</div>
+          <div class="quiz-mode-title">Match Pairs</div>
+          <div class="quiz-mode-desc">Connect mammals to stats</div>
+        </div>
+        <div class="quiz-mode-card" onclick="startRanking()">
+          <div class="quiz-mode-icon">📊</div>
+          <div class="quiz-mode-title">Rank & Order</div>
+          <div class="quiz-mode-desc">Sort by weight, gestation…</div>
+        </div>
+        <div class="quiz-mode-card" onclick="showCountPicker('true-false')">
+          <div class="quiz-mode-icon">⚡</div>
+          <div class="quiz-mode-title">True or False</div>
+          <div class="quiz-mode-desc">Rapid fire statements</div>
+        </div>
+      </div>
+      <div class="quiz-cat-header" style="width:100%;text-align:left;margin-top:8px">📍 Other Quizzes</div>
       <div class="quiz-type-select">
-        <button class="quiz-type-btn" onclick="startQuiz('mammal-facts')">
-          <div class="qt-title">🦁 Mammal Facts</div>
-          <div class="qt-desc">Lifespan, weight, gestation, weaning, diet, social structure</div>
-        </button>
-        <button class="quiz-type-btn" onclick="startQuiz('territorial')">
+        <button class="quiz-type-btn" onclick="showCountPicker('territorial')">
           <div class="qt-title">📍 Territorial or Not?</div>
           <div class="qt-desc">Is this mammal territorial?</div>
         </button>
-        <button class="quiz-type-btn" onclick="startQuiz('track-id')">
+        <button class="quiz-type-btn" onclick="startQuiz('track-id','all')">
           <div class="qt-title">🐾 Track Identification</div>
-          <div class="qt-desc">Match the track description to the animal</div>
+          <div class="qt-desc">Match track description to animal</div>
         </button>
-        <button class="quiz-type-btn" onclick="startQuiz('tree-sci')">
+        <button class="quiz-type-btn" onclick="startQuiz('tree-sci','all')">
           <div class="qt-title">🌳 Tree Scientific Names</div>
-          <div class="qt-desc">Match common names to scientific names</div>
+          <div class="qt-desc">Match common to scientific names</div>
         </button>
-        <button class="quiz-type-btn" onclick="startQuiz('tree-common')">
+        <button class="quiz-type-btn" onclick="startQuiz('tree-common','all')">
           <div class="qt-title">🌿 Tree Common Names</div>
-          <div class="qt-desc">Match scientific names to common names</div>
+          <div class="qt-desc">Match scientific to common names</div>
         </button>
       </div>
     </div>
   `;
 }
 
-function shuffle(arr) {
-  const a = [...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
+function showCountPicker(quizType) {
+  const labels = {'mammal-facts':'📝 Multiple Choice','territorial':'📍 Territorial or Not?','fill-blank':'✏️ Fill in the Blank','true-false':'⚡ True or False'};
+  document.getElementById('quiz-area').innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-question">${labels[quizType]||'Quiz'}</div>
+      <div class="quiz-sub">How many questions?</div>
+      <div class="quiz-count-picker">
+        <button class="quiz-count-btn" onclick="startQuiz('${quizType}',10)">10</button>
+        <button class="quiz-count-btn" onclick="startQuiz('${quizType}',20)">20</button>
+        <button class="quiz-count-btn" onclick="startQuiz('${quizType}','all')">All 41</button>
+      </div>
+      <div class="quiz-controls" style="margin-top:16px">
+        <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">← Back</button>
+      </div>
+    </div>
+  `;
 }
 
-function pickRandom(arr, n, exclude) {
-  const pool = arr.filter(x => x !== exclude);
-  return shuffle(pool).slice(0, n);
-}
-
-function generateMammalFactQuestions() {
+// --- QUESTION GENERATORS ---
+function generateMammalFactQuestions(count) {
   const qs = [];
   const fields = [
-    {key:'lifespan',label:'lifespan'},
-    {key:'weight',label:'adult weight'},
-    {key:'gestation',label:'gestation period'},
-    {key:'weaning',label:'weaning age'},
-    {key:'food',label:'diet'},
+    {key:'lifespan',label:'lifespan'},{key:'weight',label:'adult weight'},
+    {key:'gestation',label:'gestation period'},{key:'weaning',label:'weaning age'},
+    {key:'food',label:'diet'},{key:'social',label:'social structure'},
+    {key:'territorial',label:'territorial behavior'},
   ];
   const pool = shuffle(mammals);
   for(const m of pool) {
     const f = fields[Math.floor(Math.random()*fields.length)];
     const correct = m[f.key];
-    const wrongs = pickRandom(mammals, 3, m).map(w => w[f.key]);
-    const opts = shuffle([correct, ...wrongs]);
-    qs.push({
-      q: `What is the ${f.label} of the <strong>${m.name}</strong>?`,
-      opts, correct
-    });
+    const wrongs = pickRandom(mammals, 6, m).map(w => w[f.key]).filter(w => w !== correct);
+    const unique = [...new Set(wrongs)].slice(0,3);
+    if(unique.length < 3) continue;
+    const opts = shuffle([correct, ...unique]);
+    qs.push({ q:`What is the ${f.label} of <strong>${m.name}</strong>?`, opts, correct, mammal:m.name, field:f.key });
   }
-  return qs.slice(0, 20);
+  return sliceToCount(qs, count);
 }
 
-function generateTerritorialQuestions() {
+function generateTerritorialQuestions(count) {
   const qs = [];
-  const pool = shuffle(mammals);
-  for(const m of pool) {
+  for(const m of shuffle(mammals)) {
     const isYes = m.territorial.toLowerCase().startsWith('yes');
-    qs.push({
-      q: `Is the <strong>${m.name}</strong> territorial?`,
-      opts: ['Yes','No'],
-      correct: isYes ? 'Yes' : 'No',
-      detail: m.territorial
-    });
+    qs.push({ q:`Is the <strong>${m.name}</strong> territorial?`, opts:['Yes','No'], correct:isYes?'Yes':'No', detail:m.territorial, mammal:m.name, field:'territorial' });
   }
-  return qs.slice(0, 20);
+  return sliceToCount(qs, count);
 }
 
 function generateTrackQuestions() {
   const qs = [];
-  const pool = shuffle(tracks);
-  for(const t of pool) {
+  for(const t of shuffle(tracks)) {
     const hint = t.features[Math.floor(Math.random()*t.features.length)];
     const wrongs = pickRandom(tracks, 3, t).map(w => w.name);
-    const opts = shuffle([t.name, ...wrongs]);
-    qs.push({
-      q: `Which animal has this track feature?<br><em>"${hint}"</em>`,
-      sub: `Size: ${t.size}`,
-      opts, correct: t.name
-    });
+    qs.push({ q:`Which animal has this track feature?<br><em>"${hint}"</em>`, sub:`Size: ${t.size}`, opts:shuffle([t.name,...wrongs]), correct:t.name });
   }
   return qs;
 }
 
 function generateTreeSciQuestions() {
   const qs = [];
-  const pool = shuffle(trees);
-  for(const t of pool) {
+  for(const t of shuffle(trees)) {
     const wrongs = pickRandom(trees, 3, t).map(w => w.sci);
-    const opts = shuffle([t.sci, ...wrongs]);
-    qs.push({
-      q: `What is the scientific name of <strong>${t.common}</strong>?`,
-      opts, correct: t.sci
-    });
+    qs.push({ q:`What is the scientific name of <strong>${t.common}</strong>?`, opts:shuffle([t.sci,...wrongs]), correct:t.sci });
   }
   return qs;
 }
 
 function generateTreeCommonQuestions() {
   const qs = [];
-  const pool = shuffle(trees);
-  for(const t of pool) {
+  for(const t of shuffle(trees)) {
     const wrongs = pickRandom(trees, 3, t).map(w => w.common);
-    const opts = shuffle([t.common, ...wrongs]);
-    qs.push({
-      q: `What is the common name of <em>${t.sci}</em>?`,
-      opts, correct: t.common
-    });
+    qs.push({ q:`What is the common name of <em>${t.sci}</em>?`, opts:shuffle([t.common,...wrongs]), correct:t.common });
   }
   return qs;
 }
 
-function startQuiz(type) {
-  quiz.type = type;
-  quiz.idx = 0;
-  quiz.score = 0;
-  quiz.wrong = 0;
-  quiz.answered = false;
+function generateFillBlankQuestions(count) {
+  const qs = [];
+  const fields = [
+    {key:'_g',display:'gestation',label:'gestation period (in days)',unit:'days'},
+    {key:'_w',display:'weight',label:'adult weight (in kg)',unit:'kg'},
+    {key:'_l',display:'lifespan',label:'lifespan (in years)',unit:'yrs'},
+  ];
+  for(const m of shuffle(mammals)) {
+    const f = fields[Math.floor(Math.random()*fields.length)];
+    qs.push({ mammal:m.name, field:f.display, prompt:`What is the ${f.label} of <strong>${m.name}</strong>?`,
+      answer:m[f.key], unit:f.unit, fullAnswer:f.key==='_g'?m.gestation:f.key==='_w'?m.weight:m.lifespan });
+  }
+  return sliceToCount(qs, count);
+}
+
+function generateTrueFalseQuestions(count) {
+  const qs = [];
+  const fields = [
+    {key:'_g',label:'gestation period is',fmt:m=>m.gestation},
+    {key:'_l',label:'lifespan is',fmt:m=>m.lifespan},
+    {key:'_w',label:'weight is approximately',fmt:m=>m.weight},
+    {key:'weaning',label:'weaning age is',fmt:m=>m.weaning},
+  ];
+  for(const m of shuffle(mammals)) {
+    const f = fields[Math.floor(Math.random()*fields.length)];
+    const makeTrue = Math.random() > 0.5;
+    let displayValue, correct;
+    if(makeTrue) {
+      displayValue = f.fmt(m); correct = true;
+    } else {
+      const others = mammals.filter(x => x!==m && f.fmt(x)!==f.fmt(m));
+      if(others.length===0) { displayValue = f.fmt(m); correct = true; }
+      else { const o = others[Math.floor(Math.random()*others.length)]; displayValue = f.fmt(o); correct = false; }
+    }
+    qs.push({ statement:`The <strong>${m.name}</strong>'s ${f.label} <strong>${displayValue}</strong>`,
+      correct, explanation:`${m.name}: ${f.fmt(m)}`, mammal:m.name, field:f.key });
+  }
+  return sliceToCount(qs, count);
+}
+
+// --- START QUIZ ---
+function startQuiz(type, count) {
+  quiz.type = type; quiz.idx = 0; quiz.score = 0; quiz.wrong = 0;
+  quiz.answered = false; quiz.mistakes = []; quiz.count = count;
   switch(type) {
-    case 'mammal-facts': quiz.questions = generateMammalFactQuestions(); break;
-    case 'territorial': quiz.questions = generateTerritorialQuestions(); break;
+    case 'mammal-facts': quiz.questions = generateMammalFactQuestions(count); break;
+    case 'territorial': quiz.questions = generateTerritorialQuestions(count); break;
     case 'track-id': quiz.questions = generateTrackQuestions(); break;
     case 'tree-sci': quiz.questions = generateTreeSciQuestions(); break;
     case 'tree-common': quiz.questions = generateTreeCommonQuestions(); break;
+    case 'fill-blank': quiz.questions = generateFillBlankQuestions(count); startFillBlank(); return;
+    case 'true-false': quiz.questions = generateTrueFalseQuestions(count); startTrueFalse(); return;
   }
   renderQuiz();
 }
 
+// --- MC / TERRITORIAL QUIZ ---
 function renderQuiz() {
   const area = document.getElementById('quiz-area');
-  if(quiz.idx >= quiz.questions.length) {
-    area.innerHTML = `
-      <div class="quiz-card">
-        <div class="quiz-question">Quiz Complete! 🎉</div>
-        <div class="quiz-score">
-          <div class="quiz-score-item score-correct"><div class="quiz-score-num">${quiz.score}</div><div class="quiz-score-label">Correct</div></div>
-          <div class="quiz-score-item score-wrong"><div class="quiz-score-num">${quiz.wrong}</div><div class="quiz-score-label">Wrong</div></div>
-          <div class="quiz-score-item score-total"><div class="quiz-score-num">${Math.round(quiz.score/(quiz.score+quiz.wrong)*100)}%</div><div class="quiz-score-label">Score</div></div>
-        </div>
-        <div class="quiz-controls">
-          <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Menu</button>
-          <button class="quiz-btn quiz-btn-primary" onclick="startQuiz('${quiz.type}')">Retry</button>
-        </div>
-      </div>
-    `;
-    return;
-  }
+  if(quiz.idx >= quiz.questions.length) { renderQuizResults(); return; }
   const q = quiz.questions[quiz.idx];
   quiz.answered = false;
   area.innerHTML = `
@@ -1348,7 +1841,6 @@ function renderQuiz() {
     </div>
   `;
 }
-
 function answerQuiz(optIdx) {
   if(quiz.answered) return;
   quiz.answered = true;
@@ -1357,22 +1849,433 @@ function answerQuiz(optIdx) {
   const selected = btns[optIdx];
   const isCorrect = q.opts[optIdx] === q.correct;
   if(isCorrect) { quiz.score++; selected.classList.add('correct'); }
-  else { quiz.wrong++; selected.classList.add('wrong'); }
-  // highlight correct
-  btns.forEach((b,i) => { if(q.opts[i] === q.correct) b.classList.add('correct'); });
-  // show detail if available
+  else { quiz.wrong++; selected.classList.add('wrong');
+    quiz.mistakes.push({q:q.q, correct:q.correct, yours:q.opts[optIdx], mammal:q.mammal, field:q.field});
+  }
+  btns.forEach((b,i) => { if(q.opts[i]===q.correct) b.classList.add('correct'); });
   const detail = document.getElementById('quiz-detail');
   if(detail) detail.style.display = 'block';
-  // enable next
   const next = document.getElementById('quiz-next');
-  next.style.opacity = '1';
-  next.style.pointerEvents = 'auto';
+  next.style.opacity='1'; next.style.pointerEvents='auto';
+}
+function nextQuiz() { quiz.idx++; renderQuiz(); }
+
+// --- QUIZ RESULTS (ENHANCED) ---
+function renderQuizResults() {
+  const area = document.getElementById('quiz-area');
+  const pct = quiz.score+quiz.wrong>0 ? Math.round(quiz.score/(quiz.score+quiz.wrong)*100) : 0;
+  const mistakesHTML = quiz.mistakes.length > 0 ? `
+    <div style="width:100%;margin-top:16px">
+      <button class="quiz-btn quiz-btn-secondary" style="width:100%;margin-bottom:8px" onclick="toggleMistakes()">
+        📋 Review ${quiz.mistakes.length} Mistake${quiz.mistakes.length>1?'s':''}
+      </button>
+      <div class="mistakes-list" id="mistakes-list" style="display:none">
+        ${quiz.mistakes.map(m => `
+          <div class="mistake-item">
+            <div class="mistake-q">${m.q||m.statement||''}</div>
+            <div class="mistake-correct">✓ ${m.correct}</div>
+            ${m.yours ? `<div class="mistake-yours">✗ You answered: ${m.yours}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    </div>` : '';
+  area.innerHTML = `
+    <div class="quiz-card">
+      <div class="quiz-question">Quiz Complete! 🎉</div>
+      <div class="quiz-score">
+        <div class="quiz-score-item score-correct"><div class="quiz-score-num">${quiz.score}</div><div class="quiz-score-label">Correct</div></div>
+        <div class="quiz-score-item score-wrong"><div class="quiz-score-num">${quiz.wrong}</div><div class="quiz-score-label">Wrong</div></div>
+        <div class="quiz-score-item score-total"><div class="quiz-score-num">${pct}%</div><div class="quiz-score-label">Score</div></div>
+      </div>
+      ${mistakesHTML}
+      <div class="quiz-controls" style="margin-top:12px">
+        <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Menu</button>
+        <button class="quiz-btn quiz-btn-primary" onclick="startQuiz('${quiz.type}','${quiz.count}')">Retry</button>
+      </div>
+    </div>
+  `;
+}
+function toggleMistakes() {
+  const el = document.getElementById('mistakes-list');
+  el.style.display = el.style.display==='none' ? 'flex' : 'none';
 }
 
-function nextQuiz() {
-  quiz.idx++;
-  renderQuiz();
+// ============================================
+// FLASHCARD MODE (with SRS)
+// ============================================
+let flashcardState = { cards:[], idx:0, flipped:false, reviewed:0 };
+const fieldLabels = { lifespan:'Lifespan', weight:'Adult Weight', gestation:'Gestation Period',
+  weaning:'Weaning Age', food:'Diet', social:'Social Structure', territorial:'Territorial' };
+
+function startFlashcards() {
+  const prioritized = getSRSPrioritized();
+  flashcardState.cards = prioritized.slice(0, 20);
+  flashcardState.idx = 0; flashcardState.flipped = false; flashcardState.reviewed = 0;
+  renderFlashcard();
 }
+function renderFlashcard() {
+  const area = document.getElementById('quiz-area');
+  const {cards,idx} = flashcardState;
+  if(idx >= cards.length) {
+    area.innerHTML = `<div class="quiz-card">
+      <div class="quiz-question">Session Complete! 🧠</div>
+      <div class="quiz-sub">${flashcardState.reviewed} cards reviewed</div>
+      <div style="font-size:.75rem;color:var(--text-faint);margin:8px 0">SRS progress saved to device</div>
+      <div class="quiz-controls">
+        <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Menu</button>
+        <button class="quiz-btn quiz-btn-primary" onclick="startFlashcards()">Another Round</button>
+      </div>
+    </div>`;
+    return;
+  }
+  const c = cards[idx];
+  const label = fieldLabels[c.field] || c.field;
+  const answer = c.mammal[c.field];
+  flashcardState.flipped = false;
+  const srs = getSRS();
+  const total = mammals.length * 7;
+  const mastered = Object.values(srs).filter(s => s.box >= 3).length;
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:.8rem;color:var(--text-dim)">${idx+1} / ${cards.length}</span>
+      <span style="font-size:.7rem;color:var(--sage)">${mastered}/${total} mastered</span>
+    </div>
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard" onclick="flipFlashcard()">
+        <div class="flashcard-face">
+          <div class="flashcard-mammal">${c.mammal.name}</div>
+          <div class="flashcard-prompt">${label}?</div>
+          <div class="flashcard-hint">Tap to flip</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="flashcard-field">${label}</div>
+          <div class="flashcard-answer">${answer}</div>
+        </div>
+      </div>
+    </div>
+    <div id="srs-wrap" style="display:none">
+      <div style="font-size:.7rem;color:var(--text-faint);text-align:center;margin-bottom:8px">How well did you know this?</div>
+      <div class="srs-buttons">
+        <button class="srs-btn srs-again" onclick="rateFlashcard('again')">😵 Again</button>
+        <button class="srs-btn srs-hard" onclick="rateFlashcard('hard')">🤔 Hard</button>
+        <button class="srs-btn srs-easy" onclick="rateFlashcard('easy')">😊 Easy</button>
+      </div>
+    </div>
+    <div class="quiz-controls" style="margin-top:12px">
+      <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Quit</button>
+    </div>
+  `;
+}
+function flipFlashcard() {
+  if(flashcardState.flipped) return;
+  flashcardState.flipped = true;
+  document.getElementById('flashcard').classList.add('flipped');
+  document.getElementById('srs-wrap').style.display = 'block';
+}
+function rateFlashcard(rating) {
+  const c = flashcardState.cards[flashcardState.idx];
+  srsRate(c.mammal.name, c.field, rating);
+  flashcardState.reviewed++; flashcardState.idx++;
+  renderFlashcard();
+}
+
+// ============================================
+// FILL IN THE BLANK
+// ============================================
+let fibState = { questions:[], idx:0, score:0, wrong:0, mistakes:[], answered:false };
+function startFillBlank() {
+  fibState.questions = quiz.questions; fibState.idx=0; fibState.score=0;
+  fibState.wrong=0; fibState.mistakes=[]; fibState.answered=false;
+  renderFillBlank();
+}
+function renderFillBlank() {
+  const area = document.getElementById('quiz-area');
+  const {questions,idx,score} = fibState;
+  if(idx >= questions.length) {
+    quiz.score=fibState.score; quiz.wrong=fibState.wrong; quiz.mistakes=fibState.mistakes;
+    renderQuizResults(); return;
+  }
+  const q = questions[idx]; fibState.answered = false;
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:.8rem;color:var(--text-dim)">${idx+1} / ${questions.length}</span>
+      <span style="font-size:.8rem;color:var(--sage)">✓ ${score}</span>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-question">${q.prompt}</div>
+      <div class="quiz-sub">Enter the number (${q.unit})</div>
+      <div class="fib-input-wrap">
+        <input class="fib-input" id="fib-answer" type="number" inputmode="numeric" placeholder="Your answer…"
+               onkeydown="if(event.key==='Enter')checkFillBlank()">
+        <button class="fib-submit" id="fib-submit" onclick="checkFillBlank()">Check</button>
+      </div>
+      <div id="fib-result-area"></div>
+    </div>
+    <div class="quiz-controls" style="margin-top:12px">
+      <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Quit</button>
+      <button class="quiz-btn quiz-btn-primary" id="fib-next" style="opacity:0.4;pointer-events:none" onclick="nextFillBlank()">Next →</button>
+    </div>
+  `;
+  setTimeout(()=>{const el=document.getElementById('fib-answer');if(el)el.focus();},100);
+}
+function checkFillBlank() {
+  if(fibState.answered) return;
+  fibState.answered = true;
+  const q = fibState.questions[fibState.idx];
+  const input = document.getElementById('fib-answer');
+  const userVal = parseFloat(input.value);
+  const correct = q.answer;
+  const tolerance = q.unit==='kg' ? 0.15 : 0.08;
+  const isCorrect = !isNaN(userVal) && Math.abs(userVal-correct) <= Math.max(correct*tolerance, 1);
+  const ra = document.getElementById('fib-result-area');
+  if(isCorrect) {
+    fibState.score++;
+    ra.innerHTML = `<div class="fib-result correct">✓ Correct! ${q.fullAnswer}</div>`;
+  } else {
+    fibState.wrong++;
+    ra.innerHTML = `<div class="fib-result wrong">✗ The answer is <strong>${correct} ${q.unit}</strong><br>${q.fullAnswer}</div>`;
+    fibState.mistakes.push({q:q.prompt,correct:`${correct} ${q.unit} — ${q.fullAnswer}`,yours:input.value||'(no answer)',mammal:q.mammal,field:q.field});
+  }
+  input.disabled = true;
+  document.getElementById('fib-submit').style.display='none';
+  const next = document.getElementById('fib-next');
+  next.style.opacity='1'; next.style.pointerEvents='auto';
+}
+function nextFillBlank() { fibState.idx++; renderFillBlank(); }
+
+// ============================================
+// MATCH PAIRS MODE
+// ============================================
+let matchState = { leftItems:[], rightItems:[], selLeft:null, selRight:null, matched:0, total:0, round:0, rounds:0, totalScore:0, totalWrong:0, fieldObj:null, allMammals:[] };
+
+function startMatchPairs() {
+  const fields = [{key:'gestation',label:'Gestation Period'},{key:'lifespan',label:'Lifespan'},{key:'weight',label:'Adult Weight'},{key:'weaning',label:'Weaning Age'}];
+  matchState.fieldObj = fields[Math.floor(Math.random()*fields.length)];
+  matchState.round=0; matchState.totalScore=0; matchState.totalWrong=0;
+  matchState.allMammals = shuffle(mammals);
+  matchState.rounds = Math.ceil(matchState.allMammals.length / 5);
+  nextMatchRound();
+}
+function nextMatchRound() {
+  const start = matchState.round * 5;
+  const group = matchState.allMammals.slice(start, start+5);
+  if(group.length===0) {
+    quiz.score=matchState.totalScore; quiz.wrong=matchState.totalWrong;
+    quiz.mistakes=[]; quiz.type='match'; quiz.count='all';
+    renderQuizResults(); return;
+  }
+  matchState.leftItems = group.map(m=>({name:m.name,value:m[matchState.fieldObj.key],matched:false}));
+  matchState.rightItems = shuffle(group.map(m=>({name:m.name,value:m[matchState.fieldObj.key],matched:false})));
+  matchState.selLeft=null; matchState.selRight=null;
+  matchState.matched=0; matchState.total=group.length; matchState.round++;
+  renderMatchPairs();
+}
+function renderMatchPairs() {
+  const area = document.getElementById('quiz-area');
+  const {leftItems,rightItems,fieldObj,round,rounds,totalScore,selLeft,selRight} = matchState;
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:.8rem;color:var(--text-dim)">Round ${round} / ${rounds}</span>
+      <span style="font-size:.8rem;color:var(--sage)">✓ ${totalScore}</span>
+    </div>
+    <div class="quiz-card" style="padding:16px">
+      <div class="quiz-question" style="font-size:.95rem;margin-bottom:4px">Match ${fieldObj.label}</div>
+      <div class="quiz-sub">Tap a mammal, then its ${fieldObj.label.toLowerCase()}</div>
+      <div class="match-grid">
+        <div class="match-column">
+          <div class="match-col-label">Mammal</div>
+          ${leftItems.map((p,i) => `<div class="match-item match-left${p.matched?' matched-correct':''}${selLeft===i?' selected':''}" onclick="selectMatchLeft(${i})">${p.name}</div>`).join('')}
+        </div>
+        <div class="match-column">
+          <div class="match-col-label">${fieldObj.label}</div>
+          ${rightItems.map((p,i) => `<div class="match-item match-right${p.matched?' matched-correct':''}${selRight===i?' selected':''}" onclick="selectMatchRight(${i})">${p.value}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <div class="quiz-controls" style="margin-top:12px">
+      <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Quit</button>
+    </div>
+  `;
+}
+function selectMatchLeft(idx) {
+  if(matchState.leftItems[idx].matched) return;
+  matchState.selLeft = idx;
+  document.querySelectorAll('.match-left').forEach((e,i) => e.classList.toggle('selected', i===idx && !matchState.leftItems[i].matched));
+  if(matchState.selRight !== null) setTimeout(checkMatch, 80);
+}
+function selectMatchRight(idx) {
+  if(matchState.rightItems[idx].matched) return;
+  matchState.selRight = idx;
+  document.querySelectorAll('.match-right').forEach((e,i) => e.classList.toggle('selected', i===idx && !matchState.rightItems[i].matched));
+  if(matchState.selLeft !== null) setTimeout(checkMatch, 80);
+}
+function checkMatch() {
+  const left = matchState.leftItems[matchState.selLeft];
+  const right = matchState.rightItems[matchState.selRight];
+  if(!left||!right) return;
+  const leftEls = document.querySelectorAll('.match-left');
+  const rightEls = document.querySelectorAll('.match-right');
+  if(left.value === right.value) {
+    matchState.totalScore++; matchState.matched++;
+    left.matched = true; right.matched = true;
+    leftEls[matchState.selLeft].classList.remove('selected');
+    leftEls[matchState.selLeft].classList.add('matched-correct');
+    rightEls[matchState.selRight].classList.remove('selected');
+    rightEls[matchState.selRight].classList.add('matched-correct');
+    matchState.selLeft=null; matchState.selRight=null;
+    if(matchState.matched >= matchState.total) setTimeout(nextMatchRound, 700);
+  } else {
+    matchState.totalWrong++;
+    leftEls[matchState.selLeft].classList.add('matched-wrong');
+    rightEls[matchState.selRight].classList.add('matched-wrong');
+    const sl = matchState.selLeft, sr = matchState.selRight;
+    matchState.selLeft=null; matchState.selRight=null;
+    setTimeout(()=>{
+      leftEls[sl].classList.remove('selected','matched-wrong');
+      rightEls[sr].classList.remove('selected','matched-wrong');
+    }, 500);
+  }
+}
+
+// ============================================
+// RANKING MODE
+// ============================================
+let rankState = { items:[], fieldObj:null, submitted:false, round:0, rounds:0, totalScore:0, totalWrong:0, allMammals:[] };
+
+function startRanking() {
+  const fields = [{key:'_w',label:'Weight',unit:'kg',sort:'lightest → heaviest'},
+    {key:'_g',label:'Gestation',unit:'days',sort:'shortest → longest'},
+    {key:'_l',label:'Lifespan',unit:'yrs',sort:'shortest → longest'}];
+  rankState.fieldObj = fields[Math.floor(Math.random()*fields.length)];
+  rankState.round=0; rankState.totalScore=0; rankState.totalWrong=0;
+  rankState.allMammals = shuffle(mammals); rankState.rounds = Math.ceil(mammals.length/5);
+  nextRankRound();
+}
+function nextRankRound() {
+  const start = rankState.round * 5;
+  const group = rankState.allMammals.slice(start, start+5);
+  if(group.length < 2) {
+    quiz.score=rankState.totalScore; quiz.wrong=rankState.totalWrong;
+    quiz.mistakes=[]; quiz.type='rank'; quiz.count='all';
+    renderQuizResults(); return;
+  }
+  rankState.items = shuffle(group.map(m=>({name:m.name, value:m[rankState.fieldObj.key]})));
+  rankState.submitted = false; rankState.round++;
+  renderRanking();
+}
+function renderRanking() {
+  const area = document.getElementById('quiz-area');
+  const {items,fieldObj,submitted,round,rounds,totalScore} = rankState;
+  const sorted = [...items].sort((a,b)=>a.value-b.value);
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:.8rem;color:var(--text-dim)">Round ${round} / ${rounds}</span>
+      <span style="font-size:.8rem;color:var(--sage)">✓ ${totalScore}</span>
+    </div>
+    <div class="quiz-card" style="padding:16px">
+      <div class="quiz-question" style="font-size:.95rem">Sort by ${fieldObj.label}</div>
+      <div class="rank-prompt">${fieldObj.sort}</div>
+      <div class="rank-list">
+        ${items.map((item,i) => {
+          const posClass = submitted ? (item.name===sorted[i].name ? 'correct-pos' : 'wrong-pos') : '';
+          return `<div class="rank-item ${posClass}">
+            <div class="rank-num">${i+1}</div>
+            <span>${item.name}</span>
+            ${submitted ? `<span class="rank-value">${item.value} ${fieldObj.unit}</span>` : ''}
+            ${!submitted ? `<div class="rank-arrows">
+              <button class="rank-arrow" onclick="moveRankItem(${i},-1)" ${i===0?'disabled style="opacity:0.3"':''}>▲</button>
+              <button class="rank-arrow" onclick="moveRankItem(${i},1)" ${i===items.length-1?'disabled style="opacity:0.3"':''}>▼</button>
+            </div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="quiz-controls" style="margin-top:12px">
+      <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Quit</button>
+      ${!submitted ?
+        `<button class="quiz-btn quiz-btn-primary" onclick="submitRanking()">Check Order</button>` :
+        `<button class="quiz-btn quiz-btn-primary" onclick="nextRankRound()">Next →</button>`}
+    </div>
+  `;
+}
+function moveRankItem(idx, dir) {
+  if(rankState.submitted) return;
+  const ni = idx + dir;
+  if(ni<0 || ni>=rankState.items.length) return;
+  [rankState.items[idx], rankState.items[ni]] = [rankState.items[ni], rankState.items[idx]];
+  renderRanking();
+}
+function submitRanking() {
+  rankState.submitted = true;
+  const sorted = [...rankState.items].sort((a,b)=>a.value-b.value);
+  let correct = 0;
+  for(let i=0;i<rankState.items.length;i++) {
+    if(rankState.items[i].name===sorted[i].name) correct++;
+  }
+  rankState.totalScore += correct;
+  rankState.totalWrong += (rankState.items.length - correct);
+  renderRanking();
+}
+
+// ============================================
+// TRUE/FALSE MODE
+// ============================================
+let tfState = { questions:[], idx:0, score:0, wrong:0, mistakes:[], answered:false };
+
+function startTrueFalse() {
+  tfState.questions = quiz.questions; tfState.idx=0; tfState.score=0;
+  tfState.wrong=0; tfState.mistakes=[]; tfState.answered=false;
+  renderTrueFalse();
+}
+function renderTrueFalse() {
+  const area = document.getElementById('quiz-area');
+  const {questions,idx,score} = tfState;
+  if(idx >= questions.length) {
+    quiz.score=tfState.score; quiz.wrong=tfState.wrong; quiz.mistakes=tfState.mistakes;
+    renderQuizResults(); return;
+  }
+  const q = questions[idx]; tfState.answered = false;
+  area.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <span style="font-size:.8rem;color:var(--text-dim)">${idx+1} / ${questions.length}</span>
+      <span style="font-size:.8rem;color:var(--sage)">✓ ${score}</span>
+    </div>
+    <div class="quiz-card">
+      <div class="tf-statement">${q.statement}</div>
+      <div class="tf-buttons">
+        <button class="tf-btn tf-true" id="tf-true" onclick="answerTF(true)">✓ True</button>
+        <button class="tf-btn tf-false" id="tf-false" onclick="answerTF(false)">✗ False</button>
+      </div>
+      <div id="tf-explain" style="display:none"></div>
+    </div>
+    <div class="quiz-controls" style="margin-top:12px">
+      <button class="quiz-btn quiz-btn-secondary" onclick="showQuizMenu()">Quit</button>
+      <button class="quiz-btn quiz-btn-primary" id="tf-next" style="opacity:0.4;pointer-events:none" onclick="nextTF()">Next →</button>
+    </div>
+  `;
+}
+function answerTF(userAnswer) {
+  if(tfState.answered) return;
+  tfState.answered = true;
+  const q = tfState.questions[tfState.idx];
+  const isCorrect = userAnswer === q.correct;
+  const trueBtn = document.getElementById('tf-true');
+  const falseBtn = document.getElementById('tf-false');
+  if(isCorrect) {
+    tfState.score++;
+    (userAnswer ? trueBtn : falseBtn).classList.add('sel-correct');
+  } else {
+    tfState.wrong++;
+    (userAnswer ? trueBtn : falseBtn).classList.add('sel-wrong');
+    (q.correct ? trueBtn : falseBtn).classList.add('sel-correct');
+    tfState.mistakes.push({q:q.statement,correct:q.correct?'True':'False',yours:userAnswer?'True':'False',mammal:q.mammal});
+  }
+  document.getElementById('tf-explain').innerHTML = `<div class="tf-explanation">${q.explanation}</div>`;
+  document.getElementById('tf-explain').style.display = 'block';
+  const next = document.getElementById('tf-next');
+  next.style.opacity='1'; next.style.pointerEvents='auto';
+}
+function nextTF() { tfState.idx++; renderTrueFalse(); }
 
 // ============================================
 // IMAGE GALLERY
