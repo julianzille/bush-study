@@ -9,6 +9,7 @@
 <meta name="theme-color" content="#0f0f0f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
 :root {
   --bg: #0f0f0f;
@@ -1209,7 +1210,10 @@ body.offline-mode .offline-badge {
         <h1>🌍 Bush Study Guide</h1>
         <div class="subtitle">Mammals • Tracks • Trees • Quiz</div>
       </div>
-      <button class="compare-toggle" id="compare-toggle" onclick="toggleCompareMode()">⚖️ Compare</button>
+      <div style="display:flex; gap:8px;">
+        <button class="compare-toggle" id="plot-toggle" onclick="togglePlotMode()">📊 Plot</button>
+        <button class="compare-toggle" id="compare-toggle" onclick="toggleCompareMode()">⚖️ Compare</button>
+      </div>
     </div>
   </div>
   <div class="search-wrap">
@@ -1257,6 +1261,17 @@ body.offline-mode .offline-badge {
     </button>
     <div id="compare-images-section"></div>
     <div id="compare-results" class="compare-results"></div>
+  </div>
+  <!-- PLOT MODE -->
+  <div id="plot-container" class="compare-container" style="display:none">
+    <div class="plot-controls" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:15px; color:var(--text-main)">
+      <label><input type="checkbox" value="_l" class="plot-axis-cb" onchange="updatePlot()"> Lifespan</label>
+      <label><input type="checkbox" value="_g" class="plot-axis-cb" onchange="updatePlot()"> Gestation</label>
+      <label><input type="checkbox" value="_w" class="plot-axis-cb" onchange="updatePlot()"> Weight</label>
+    </div>
+    <div class="plot-canvas-wrapper" style="position:relative; height:400px; width:100%; background:var(--bg-card); border-radius:var(--radius-md); padding:10px;">
+      <canvas id="mammal-plot"></canvas>
+    </div>
   </div>
   <div class="cards" id="mammal-cards"></div>
 </div>
@@ -1838,6 +1853,7 @@ function renderMammals() {
     </div>
   `).join('');
   document.getElementById('mammal-counter').textContent = `${filtered.length} of ${mammals.length} mammals`;
+  if (typeof plotMode !== 'undefined' && plotMode) updatePlot();
 }
 
 function initMammalFilters() {
@@ -2881,11 +2897,121 @@ function cancelCompareStaging() {
   renderMammals();
 }
 
+// --- PLOT MODE LOGIC ---
+let plotMode = false;
+let plotChartInstance = null;
+
+function togglePlotMode() {
+  plotMode = !plotMode;
+  document.getElementById('plot-toggle').classList.toggle('active', plotMode);
+  
+  if (plotMode) {
+    if (compareMode) toggleCompareMode();
+    document.getElementById('mammal-cards').style.display = 'none';
+    document.getElementById('plot-container').style.display = 'block';
+    updatePlot();
+  } else {
+    document.getElementById('plot-container').style.display = 'none';
+    document.getElementById('mammal-cards').style.display = 'grid';
+  }
+}
+
+function updatePlot() {
+  if (!plotMode) return;
+  const cbs = Array.from(document.querySelectorAll('.plot-axis-cb:checked'));
+  
+  if (cbs.length > 3) {
+    cbs[0].checked = false;
+    updatePlot();
+    return;
+  }
+  
+  const ctx = document.getElementById('mammal-plot').getContext('2d');
+  if (plotChartInstance) {
+    plotChartInstance.destroy();
+    plotChartInstance = null;
+  }
+  
+  if (cbs.length === 0) return;
+  
+  const search = document.getElementById('mammal-search').value.toLowerCase();
+  let filtered = mammals.filter(m => {
+    const matchCat = activeMammalFilter === 'all' || m.cat === activeMammalFilter;
+    const matchSearch = !search || m.name.toLowerCase().includes(search);
+    return matchCat && matchSearch;
+  });
+  
+  const metrics = cbs.map(cb => cb.value);
+  const metricLabels = { '_l': 'Lifespan (yrs)', '_w': 'Weight (kg)', '_g': 'Gestation (days)' };
+  
+  const dataPoints = filtered.map(m => {
+    return {
+      x: m[metrics[0]] || 0,
+      y: metrics[1] ? (m[metrics[1]] || 0) : 0,
+      r: metrics[2] ? (m[metrics[2]] || 0) : (metrics.length === 3 ? 0 : 6),
+      _m: m
+    };
+  });
+  
+  if (metrics[2]) {
+    const maxR = Math.max(...dataPoints.map(d => d.r));
+    const minR = Math.min(...dataPoints.map(d => d.r));
+    dataPoints.forEach(d => {
+      d.r = 6 + ((d.r - minR) / (maxR - minR || 1)) * 24;
+    });
+  }
+  
+  plotChartInstance = new Chart(ctx, {
+    type: metrics.length === 3 ? 'bubble' : 'scatter',
+    data: {
+      datasets: [{
+        label: 'Mammals',
+        data: dataPoints,
+        backgroundColor: 'rgba(232,168,56,0.6)',
+        borderColor: 'rgba(232,168,56,1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              const m = ctx.raw._m;
+              let lbl = m.name;
+              lbl += ` | ${metricLabels[metrics[0]]}: ${ctx.raw.x}`;
+              if (metrics[1]) lbl += ` | ${metricLabels[metrics[1]]}: ${ctx.raw.y}`;
+              if (metrics[2]) lbl += ` | ${metricLabels[metrics[2]]}: ${m[metrics[2]]}`;
+              return lbl;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          title: { display: true, text: metricLabels[metrics[0]], color: '#ccc' },
+          ticks: { color: '#aaa' }
+        },
+        y: {
+          title: { display: !!metrics[1], text: metrics[1] ? metricLabels[metrics[1]] : '', color: '#ccc' },
+          ticks: { color: '#aaa' },
+          display: !!metrics[1]
+        }
+      }
+    }
+  });
+}
+
+
 function toggleCompareMode() {
   compareMode = !compareMode;
   document.getElementById('compare-toggle').classList.toggle('active', compareMode);
 
   if (compareMode) {
+    if (plotMode) togglePlotMode();
     if (compareStagedName) {
       compareSelection.a = mammals.find(m => m.name === compareStagedName);
       compareStagedName = null;
