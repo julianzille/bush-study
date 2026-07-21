@@ -1,7 +1,8 @@
-const CACHE_NAME = 'bush-study-v2';
+const CACHE_NAME = 'bush-study-v3';
 const STATIC_ASSETS = [
   './',
   './index.html',
+  './data.json',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap'
 ];
@@ -40,6 +41,11 @@ self.addEventListener('fetch', event => {
 
   // Skip iNaturalist API requests (let them fail naturally when offline)
   if (url.hostname.includes('api.inaturalist.org')) {
+    return;
+  }
+
+  // Skip GitHub API requests (handled by the app directly)
+  if (url.hostname.includes('api.github.com')) {
     return;
   }
 
